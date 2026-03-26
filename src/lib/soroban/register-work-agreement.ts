@@ -32,6 +32,16 @@ interface HashableAgreement {
   releaseDelaySeconds: number
 }
 
+function normalizeSorobanError(error: unknown): string {
+  const message = error instanceof Error ? error.message : 'Error desconocido al registrar en Soroban.'
+
+  if (message.includes('The user rejected this request.')) {
+    return 'Registro Soroban cancelado en Freighter. El escrow principal quedó creado correctamente.'
+  }
+
+  return message
+}
+
 function sleep(ms: number) {
   return new Promise<void>((resolve) => {
     globalThis.setTimeout(resolve, ms)
@@ -153,12 +163,10 @@ export async function registerWorkAgreement({
           : undefined,
     }
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Error desconocido al registrar en Soroban.'
-
     return {
       status: 'failed',
       sorobanAgreementHash: agreementHash,
-      sorobanError: message,
+      sorobanError: normalizeSorobanError(error),
     }
   }
 }

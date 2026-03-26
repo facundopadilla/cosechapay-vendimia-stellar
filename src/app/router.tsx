@@ -59,6 +59,7 @@ export function RouterProvider({ wallet, payments }: RouterProviderProps) {
           <PaymentDetailPage
             wallet={wallet}
             onClaim={payments.claimPayment}
+            onRetrySoroban={payments.registerPaymentInSoroban}
             onSync={payments.syncPaymentStatus}
           />
         }

@@ -4,7 +4,11 @@ import type { PaymentRecord, WalletState } from '@/types/payment'
 import { getPaymentById } from '@/lib/storage/payment-drafts'
 import { PaymentStatusBadge } from '@/components/payments/payment-status-badge'
 import { Button } from '@/components/ui/button'
-import { balanceExplorerUrl, txExplorerUrl, accountExplorerUrl } from '@/lib/stellar/client'
+import {
+  txExplorerUrl,
+  accountExplorerUrl,
+  isExplorerCompatibleClaimableBalanceId,
+} from '@/lib/stellar/client'
 import {
   calculateReleaseAt,
   formatReleaseDelay,
@@ -15,6 +19,7 @@ import './payment-detail-page.css'
 interface PaymentDetailPageProps {
   wallet: WalletState
   onClaim: (paymentId: string) => Promise<void>
+  onRetrySoroban: (paymentId: string) => Promise<void>
   onSync: (paymentId: string) => Promise<void>
 }
 
@@ -49,13 +54,16 @@ function getSorobanStatusCopy(payment: PaymentRecord) {
   }
 }
 
-export function PaymentDetailPage({ wallet, onClaim, onSync }: PaymentDetailPageProps) {
+export function PaymentDetailPage({ wallet, onClaim, onRetrySoroban, onSync }: PaymentDetailPageProps) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [payment, setPayment] = useState<PaymentRecord | null>(null)
   const [claiming, setClaiming] = useState(false)
   const [syncing, setSyncing] = useState(false)
+  const [retryingSoroban, setRetryingSoroban] = useState(false)
+  const [copyingBalanceId, setCopyingBalanceId] = useState(false)
   const [claimError, setClaimError] = useState<string | null>(null)
+  const [sorobanActionError, setSorobanActionError] = useState<string | null>(null)
   const autoSyncedIdRef = useRef<string | null>(null)
 
   function loadPayment() {
@@ -113,6 +121,34 @@ export function PaymentDetailPage({ wallet, onClaim, onSync }: PaymentDetailPage
     }
   }
 
+  async function handleRetrySoroban() {
+    if (!id) return
+    setRetryingSoroban(true)
+    setSorobanActionError(null)
+    try {
+      await onRetrySoroban(id)
+      loadPayment()
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'No se pudo reintentar el registro Soroban.'
+      setSorobanActionError(msg)
+    } finally {
+      setRetryingSoroban(false)
+    }
+  }
+
+  async function handleCopyBalanceId() {
+    if (!payment?.claimableBalanceId) return
+    if (!navigator.clipboard?.writeText) return
+
+    setCopyingBalanceId(true)
+    try {
+      await navigator.clipboard.writeText(payment.claimableBalanceId)
+      globalThis.setTimeout(() => setCopyingBalanceId(false), 1200)
+    } catch {
+      setCopyingBalanceId(false)
+    }
+  }
+
   if (!payment) {
     return (
       <div className="detail-page__not-found">
@@ -131,6 +167,14 @@ export function PaymentDetailPage({ wallet, onClaim, onSync }: PaymentDetailPage
   const isLocked = payment.status === 'locked'
   const releaseAt = calculateReleaseAt(payment.createdAt, payment.releaseDelaySeconds)
   const sorobanStatusCopy = getSorobanStatusCopy(payment)
+  const hasExplorerCompatibleBalanceId = Boolean(
+    payment.claimableBalanceId && isExplorerCompatibleClaimableBalanceId(payment.claimableBalanceId)
+  )
+  const canRetrySoroban =
+    payment.status === 'locked' &&
+    payment.sorobanRegistrationStatus === 'failed' &&
+    wallet.isConnected &&
+    wallet.publicKey === payment.employerAddress
 
   return (
     <div className="detail-page">
@@ -223,14 +267,27 @@ export function PaymentDetailPage({ wallet, onClaim, onSync }: PaymentDetailPage
           {payment.claimableBalanceId && (
             <div className="detail-page__field detail-page__field--wide">
               <span className="detail-page__label">Claimable Balance ID</span>
-              <a
-                href={balanceExplorerUrl(payment.claimableBalanceId)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="detail-page__value mono detail-page__balance-id"
-              >
-                {payment.claimableBalanceId} ↗
-              </a>
+              <span className="detail-page__value mono detail-page__balance-id">
+                {payment.claimableBalanceId}
+              </span>
+
+              <div className="detail-page__inline-actions">
+                <Button variant="ghost" size="sm" onClick={handleCopyBalanceId}>
+                  {copyingBalanceId ? 'Copiado' : 'Copiar ID'}
+                </Button>
+              </div>
+
+              {hasExplorerCompatibleBalanceId && (
+                <span className="detail-page__field-note">
+                  Lo mostramos dentro de la app porque Horizon expone este recurso como JSON y Stellar Expert no siempre lo resuelve bien.
+                </span>
+              )}
+
+              {!hasExplorerCompatibleBalanceId && (
+                <span className="detail-page__field-note">
+                  Este ID quedó guardado en un formato viejo. Tocá "Verificar estado on-chain" para regenerarlo.
+                </span>
+              )}
             </div>
           )}
 
@@ -280,6 +337,14 @@ export function PaymentDetailPage({ wallet, onClaim, onSync }: PaymentDetailPage
                 {payment.sorobanError && (
                   <span className="detail-page__soroban-error">{payment.sorobanError}</span>
                 )}
+
+                {canRetrySoroban && (
+                  <div className="detail-page__soroban-actions">
+                    <Button variant="ghost" size="sm" onClick={handleRetrySoroban} loading={retryingSoroban}>
+                      {retryingSoroban ? 'Reintentando Soroban…' : 'Reintentar registro Soroban'}
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -293,6 +358,20 @@ export function PaymentDetailPage({ wallet, onClaim, onSync }: PaymentDetailPage
             {syncing ? 'Sincronizando…' : 'Verificar estado on-chain'}
           </Button>
         )}
+
+        {payment.sorobanRegistrationStatus === 'failed' && !wallet.isConnected && (
+          <p className="detail-page__hint">
+            Conectá la wallet del empleador para reintentar el registro Soroban.
+          </p>
+        )}
+
+        {payment.sorobanRegistrationStatus === 'failed' &&
+          wallet.isConnected &&
+          wallet.publicKey !== payment.employerAddress && (
+            <p className="detail-page__hint">
+              Solo la wallet del empleador puede reintentar el registro Soroban.
+            </p>
+          )}
 
         {canClaim && (
           <Button variant="primary" onClick={handleClaim} loading={claiming}>
@@ -331,24 +410,18 @@ export function PaymentDetailPage({ wallet, onClaim, onSync }: PaymentDetailPage
         </div>
       )}
 
+      {sorobanActionError && (
+        <div className="detail-page__error" role="alert">
+          {sorobanActionError}
+        </div>
+      )}
+
       {payment.status === 'claimed' && (
         <div className="detail-page__claimed-banner">
           ✓ Este pago fue reclamado. Los fondos fueron transferidos al cosechero.
         </div>
       )}
 
-      {/* Explorer link */}
-      {payment.claimableBalanceId && (
-        <div className="detail-page__explorer-note">
-          <a
-            href={balanceExplorerUrl(payment.claimableBalanceId)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Ver en Stellar Expert →
-          </a>
-        </div>
-      )}
     </div>
   )
 }

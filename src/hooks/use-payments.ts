@@ -16,6 +16,7 @@ import {
   isBalanceStillClaimable,
   type HorizonClaimableBalance,
 } from '@/lib/stellar/query-payments'
+import { isExplorerCompatibleClaimableBalanceId } from '@/lib/stellar/client'
 import type { WalletAdapter } from '@/lib/wallet/freighter-adapter'
 import { isSorobanCompanionEnabled } from '@/lib/soroban/client'
 import { runBestEffortWorkAgreementRegistration } from '@/lib/soroban/companion-registration'
@@ -34,10 +35,28 @@ export function usePayments(wallet: WalletAdapter | null, employerAddress: strin
   /** Reload payments from localStorage */
   const refresh = useCallback(async () => {
     const all = loadPayments()
+
+    await Promise.all(
+      all.map(async (payment) => {
+        if (
+          payment.claimableBalanceId &&
+          !isExplorerCompatibleClaimableBalanceId(payment.claimableBalanceId) &&
+          payment.txHash
+        ) {
+          const resolvedBalanceId = await getClaimableBalanceIdFromTransaction(payment.txHash)
+          if (resolvedBalanceId && resolvedBalanceId !== payment.claimableBalanceId) {
+            updatePayment(payment.id, { claimableBalanceId: resolvedBalanceId })
+          }
+        }
+      })
+    )
+
+    const normalized = loadPayments()
+
     if (employerAddress) {
-      setPayments(all.filter((p) => p.employerAddress === employerAddress))
+      setPayments(normalized.filter((p) => p.employerAddress === employerAddress))
     } else {
-      setPayments(all)
+      setPayments(normalized)
     }
 
     if (!employerAddress) {
@@ -57,6 +76,40 @@ export function usePayments(wallet: WalletAdapter | null, employerAddress: strin
   useEffect(() => {
     void refresh()
   }, [refresh])
+
+  const registerPaymentInSoroban = useCallback(
+    async (paymentId: string): Promise<void> => {
+      if (!wallet) throw new Error('Wallet no conectada')
+      if (!employerAddress) throw new Error('No hay dirección de empleador')
+      if (!isSorobanCompanionEnabled()) {
+        throw new Error('Soroban no está configurado en este entorno.')
+      }
+
+      const payment = getPaymentById(paymentId)
+      if (!payment) throw new Error('Pago no encontrado')
+      if (!payment.claimableBalanceId) {
+        throw new Error('El pago todavía no tiene Claimable Balance ID para registrar.')
+      }
+      if (payment.employerAddress !== employerAddress) {
+        throw new Error('Solo la wallet del empleador puede registrar este acuerdo en Soroban.')
+      }
+
+      updatePayment(paymentId, {
+        sorobanRegistrationStatus: 'pending',
+        sorobanError: undefined,
+      })
+      await refresh()
+
+      await runBestEffortWorkAgreementRegistration({
+        register: () => registerWorkAgreement({ payment, wallet }),
+        persist: (patch) => {
+          updatePayment(paymentId, patch)
+        },
+        onSettled: refresh,
+      })
+    },
+    [wallet, employerAddress, refresh]
+  )
 
   /**
    * Create a new payment:
@@ -106,13 +159,7 @@ export function usePayments(wallet: WalletAdapter | null, employerAddress: strin
         void refresh()
 
         if (updated && claimableBalanceId && isSorobanCompanionEnabled()) {
-          void runBestEffortWorkAgreementRegistration({
-            register: () => registerWorkAgreement({ payment: updated, wallet }),
-            persist: (patch) => {
-              updatePayment(record.id, patch)
-            },
-            onSettled: refresh,
-          })
+          void registerPaymentInSoroban(record.id)
         }
 
         return updated!
@@ -211,7 +258,10 @@ export function usePayments(wallet: WalletAdapter | null, employerAddress: strin
 
       let claimableBalanceId: string | null | undefined = payment.claimableBalanceId
 
-      if (!claimableBalanceId && payment.txHash) {
+      if (
+        (!claimableBalanceId || !isExplorerCompatibleClaimableBalanceId(claimableBalanceId)) &&
+        payment.txHash
+      ) {
         claimableBalanceId = await getClaimableBalanceIdFromTransaction(payment.txHash)
 
         if (claimableBalanceId) {
@@ -220,7 +270,7 @@ export function usePayments(wallet: WalletAdapter | null, employerAddress: strin
         }
       }
 
-      if (!claimableBalanceId) return
+      if (!claimableBalanceId || !isExplorerCompatibleClaimableBalanceId(claimableBalanceId)) return
 
       const stillClaimable = await isBalanceStillClaimable(claimableBalanceId)
       if (!stillClaimable && payment.status === 'locked') {
@@ -240,6 +290,7 @@ export function usePayments(wallet: WalletAdapter | null, employerAddress: strin
     loading,
     refresh,
     createPayment,
+    registerPaymentInSoroban,
     claimPayment,
     claimClaimableBalance,
     syncPaymentStatus,
