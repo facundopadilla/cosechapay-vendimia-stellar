@@ -82,7 +82,7 @@ export function PitchPage() {
           <div className="pitch__mockup">
             <div className="pitch__mockup-chrome">
               <div className="pitch__mockup-dots"><i /><i /><i /></div>
-              <div className="pitch__mockup-url">cosechapay.vercel.app</div>
+                <div className="pitch__mockup-url">cosechapay-vendimia-stellar.vercel.app</div>
             </div>
             <div className="pitch__mockup-screen">
               <div className="pitch__m-header">
@@ -162,7 +162,7 @@ export function PitchPage() {
           <div className="pitch__mockup">
             <div className="pitch__mockup-chrome">
               <div className="pitch__mockup-dots"><i /><i /><i /></div>
-              <div className="pitch__mockup-url">cosechapay.vercel.app/payments/1</div>
+                <div className="pitch__mockup-url">cosechapay-vendimia-stellar.vercel.app/payments/1</div>
             </div>
             <div className="pitch__mockup-screen">
               <div className="pitch__m-header">
@@ -184,13 +184,17 @@ export function PitchPage() {
                     <span className="pitch__m-field-label">Balance ID</span>
                     <span className="pitch__m-field-mono">00001234abcd...</span>
                   </div>
-                  <div className="pitch__m-field">
-                    <span className="pitch__m-field-label">Descripción</span>
-                    <span className="pitch__m-field-val">Vendimia parcela 7</span>
-                  </div>
-                  <div className="pitch__m-link">Ver en Stellar Expert ↗</div>
+                <div className="pitch__m-field">
+                  <span className="pitch__m-field-label">Descripción</span>
+                  <span className="pitch__m-field-val">Vendimia parcela 7</span>
                 </div>
+                <div className="pitch__m-field">
+                  <span className="pitch__m-field-label">Soroban</span>
+                  <span className="pitch__m-field-val">Registro verificable del acuerdo</span>
+                </div>
+                <div className="pitch__m-link">Ver en Stellar Expert ↗</div>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -201,7 +205,7 @@ export function PitchPage() {
         <div className="pitch__slide-inner pitch__slide-inner--stacked">
           <div className="pitch__slide-header">
             <span className="pitch__slide-label">Cómo funciona</span>
-            <h2 className="pitch__slide-title">Tres pasos. Cero confianza ciega.</h2>
+             <h2 className="pitch__slide-title">Cuatro pasos. Cero confianza ciega.</h2>
           </div>
           <div className="pitch__slide-inner--split pitch__slide-inner--split-flush">
             <div className="pitch__steps">
@@ -213,12 +217,18 @@ export function PitchPage() {
               <div className="pitch__step-arrow">&#8594;</div>
               <div className="pitch__step-card">
                 <span className="pitch__step-num">02</span>
+                <h3>Registrá el acuerdo</h3>
+                 <p>Después del escrow, la app registra en Soroban un hash verificable del acuerdo sin bloquear el flujo principal.</p>
+              </div>
+              <div className="pitch__step-arrow">&#8594;</div>
+              <div className="pitch__step-card">
+                <span className="pitch__step-num">03</span>
                 <h3>Cosechá tranquilo</h3>
                 <p>El cosechero ve on-chain que los fondos están bloqueados. El trabajo empieza con garantía real.</p>
               </div>
               <div className="pitch__step-arrow">&#8594;</div>
               <div className="pitch__step-card">
-                <span className="pitch__step-num">03</span>
+                <span className="pitch__step-num">04</span>
                 <h3>Reclamá y listo</h3>
                 <p>El cosechero reclama el balance con su wallet. Todo queda visible en el explorer de Stellar.</p>
               </div>
@@ -228,7 +238,7 @@ export function PitchPage() {
           <div className="pitch__mockup pitch__mockup--flow">
             <div className="pitch__mockup-chrome">
               <div className="pitch__mockup-dots"><i /><i /><i /></div>
-              <div className="pitch__mockup-url">cosechapay.vercel.app</div>
+              <div className="pitch__mockup-url">cosechapay-vendimia-stellar.vercel.app</div>
             </div>
             <div className="pitch__mockup-screen pitch__mockup-screen--flow">
               {/* Screen 1: Create form */}
@@ -263,6 +273,19 @@ export function PitchPage() {
 
               <div className="pitch__m-flow-arrow">↓</div>
 
+              <div className="pitch__m-flow-step">
+                <div className="pitch__m-flow-label">Registro Soroban</div>
+                <div className="pitch__m-mini-card">
+                  <div className="pitch__m-mini-row">
+                    <strong>agreement_hash</strong>
+                    <span className="pitch__m-badge pitch__m-badge--success">Best-effort</span>
+                  </div>
+                  <div className="pitch__m-mini-mono">claimable_balance_id -&gt; hash</div>
+                </div>
+              </div>
+
+              <div className="pitch__m-flow-arrow">↓</div>
+
               {/* Screen 3: Claimed */}
               <div className="pitch__m-flow-step">
                 <div className="pitch__m-flow-label">Pago reclamado</div>
@@ -284,7 +307,7 @@ export function PitchPage() {
       <section className={`pitch__slide ${current === 4 ? 'pitch__slide--active' : ''}`}>
         <div className="pitch__slide-inner">
           <span className="pitch__slide-label">Arquitectura</span>
-          <h2 className="pitch__slide-title">Frontend-only. Blockchain-native.</h2>
+          <h2 className="pitch__slide-title">Frontend-only. Escrow nativo. Soroban visible.</h2>
           <div className="pitch__arch-grid">
             <div className="pitch__arch-card">
               <h3>React + TypeScript + Vite</h3>
@@ -299,8 +322,16 @@ export function PitchPage() {
               <p>Escrow nativo de Stellar con predicados temporales y time lock configurable.</p>
             </div>
             <div className="pitch__arch-card">
+              <h3>Soroban companion layer</h3>
+              <p>Registro verificable `claimable_balance_id -&gt; agreement_hash` solo post-escrow y con degradación segura.</p>
+            </div>
+            <div className="pitch__arch-card">
               <h3>Freighter Wallet</h3>
               <p>Firma real de transacciones. Sin custodia propia ni auth tradicional.</p>
+            </div>
+            <div className="pitch__arch-card">
+              <h3>Kill switch real</h3>
+              <p>Si Soroban falla o no está configurado, el happy path sigue funcionando en modo XLM-only.</p>
             </div>
           </div>
         </div>
@@ -310,7 +341,7 @@ export function PitchPage() {
       <section className={`pitch__slide ${current === 5 ? 'pitch__slide--active' : ''}`}>
         <div className="pitch__slide-inner">
           <span className="pitch__slide-label">Flujo de datos</span>
-          <h2 className="pitch__slide-title">Del formulario al blockchain.</h2>
+          <h2 className="pitch__slide-title">Del formulario al escrow, y del escrow a Soroban.</h2>
           <div className="pitch__flow">
             <div className="pitch__flow-node pitch__flow-node--user">
               <span>Empleador</span>
@@ -327,24 +358,31 @@ export function PitchPage() {
             <div className="pitch__flow-node pitch__flow-node--chain">
               <span>Stellar Testnet</span>
             </div>
+            <div className="pitch__flow-connector" />
+            <div className="pitch__flow-node pitch__flow-node--app">
+              <span>Soroban RPC</span>
+            </div>
           </div>
           <div className="pitch__flow-labels">
             <span>Crea pago</span>
             <span>Firma TX</span>
             <span>Claimable Balance</span>
+             <span>Registro hash</span>
           </div>
           <p className="pitch__flow-note">
-            El cosechero consulta Horizon, detecta sus balances disponibles y reclama directamente con su wallet.
+            El cosechero consulta Horizon, detecta sus balances disponibles y reclama directamente con su wallet. En paralelo, Soroban deja una huella verificable del acuerdo sin volverse dependencia del happy path.
           </p>
         </div>
       </section>
 
       {/* ── Slide 6: Demo ── */}
       <section className={`pitch__slide ${current === 6 ? 'pitch__slide--active' : ''}`}>
-        <div className="pitch__slide-inner pitch__slide-inner--split">
-          <div className="pitch__slide-content">
+        <div className="pitch__slide-inner pitch__slide-inner--stacked">
+          <div className="pitch__slide-header">
             <span className="pitch__slide-label">Demo en vivo</span>
-            <h2 className="pitch__slide-title">Veámoslo en acción.</h2>
+             <h2 className="pitch__slide-title">Veámoslo en acción.</h2>
+          </div>
+          <div className="pitch__slide-inner--split pitch__slide-inner--split-flush">
             <div className="pitch__demo-checklist">
               <div className="pitch__demo-item">
                 <span className="pitch__demo-check">&#10003;</span>
@@ -356,7 +394,7 @@ export function PitchPage() {
               </div>
               <div className="pitch__demo-item">
                 <span className="pitch__demo-check">&#10003;</span>
-                <span>Firmar con Freighter — transacción real en Stellar Testnet</span>
+                 <span>Firmar con Freighter en Stellar Testnet</span>
               </div>
               <div className="pitch__demo-item">
                 <span className="pitch__demo-check">&#10003;</span>
@@ -364,20 +402,23 @@ export function PitchPage() {
               </div>
               <div className="pitch__demo-item">
                 <span className="pitch__demo-check">&#10003;</span>
-                <span>Cambiar a wallet del cosechero y reclamar fondos</span>
+                 <span>Mostrar estado y TX Soroban en el detalle</span>
+              </div>
+              <div className="pitch__demo-item">
+                <span className="pitch__demo-check">&#10003;</span>
+                 <span>Cambiar a wallet del cosechero y reclamar</span>
               </div>
               <div className="pitch__demo-item">
                 <span className="pitch__demo-check">&#10003;</span>
                 <span>Verificar en Stellar Explorer</span>
               </div>
             </div>
-          </div>
 
           {/* Mockup: dashboard with payments */}
           <div className="pitch__mockup">
             <div className="pitch__mockup-chrome">
               <div className="pitch__mockup-dots"><i /><i /><i /></div>
-              <div className="pitch__mockup-url">cosechapay.vercel.app/payments</div>
+              <div className="pitch__mockup-url">cosechapay-vendimia-stellar.vercel.app/payments</div>
             </div>
             <div className="pitch__mockup-screen">
               <div className="pitch__m-header">
@@ -396,6 +437,7 @@ export function PitchPage() {
                   </div>
                   <div className="pitch__m-field-val" style={{ fontSize: '10px', marginTop: '4px' }}>Vendimia parcela 7</div>
                   <div className="pitch__m-field-mono">GCXW...4FH</div>
+                  <div className="pitch__m-link">Soroban TX registrada ↗</div>
                 </div>
                 <div className="pitch__m-card pitch__m-card--payment">
                   <div className="pitch__m-card-header">
@@ -408,7 +450,8 @@ export function PitchPage() {
               </div>
             </div>
           </div>
-        </div>
+          </div>{/* end split */}
+        </div>{/* end stacked */}
       </section>
 
       {/* ── Slide 7: Why Stellar ── */}
@@ -420,6 +463,10 @@ export function PitchPage() {
             <div className="pitch__reason">
               <h3>Claimable Balances nativos</h3>
               <p>Escrow sin smart contracts custom. Predicados temporales built-in.</p>
+            </div>
+            <div className="pitch__reason">
+              <h3>Soroban sin romper el core</h3>
+               <p>Nos da una capa verificable para el track Stellar y, si falla, no tumba el flujo principal.</p>
             </div>
             <div className="pitch__reason">
               <h3>Fees de fracción de centavo</h3>
