@@ -9,6 +9,7 @@ import { horizonServer, STELLAR_NETWORK } from '@/lib/stellar/client'
 export interface WalletAdapter {
   isConnected(): Promise<boolean>
   getPublicKey(): Promise<string>
+  signXdr(xdr: string): Promise<string>
   signAndSubmitXdr(xdr: string): Promise<{ hash: string }>
 }
 
@@ -57,6 +58,11 @@ export const freighterAdapter: WalletAdapter = {
   },
 
   async signAndSubmitXdr(xdr: string): Promise<{ hash: string }> {
+    const signedTxXdr = await this.signXdr(xdr)
+    return submitSignedXdr(signedTxXdr)
+  },
+
+  async signXdr(xdr: string): Promise<string> {
     const address = await this.getPublicKey()
 
     const result = await signTransaction(xdr, {
@@ -74,6 +80,6 @@ export const freighterAdapter: WalletAdapter = {
       throw new Error('Freighter no devolvió la transacción firmada.')
     }
 
-    return submitSignedXdr(result.signedTxXdr)
+    return result.signedTxXdr
   },
 }

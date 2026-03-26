@@ -8,6 +8,13 @@ export type PaymentStatus =
   | 'claimed'
   | 'failed'
 
+export type SorobanRegistrationStatus =
+  | 'disabled'
+  | 'pending'
+  | 'submitted'
+  | 'registered'
+  | 'failed'
+
 /** Only XLM is supported in the MVP */
 export type PaymentAsset = 'XLM'
 
@@ -33,6 +40,14 @@ export interface PaymentRecord {
   txHash?: string
   /** Transaction hash of the claim operation */
   claimTxHash?: string
+  /** Best-effort Soroban companion registration state */
+  sorobanRegistrationStatus?: SorobanRegistrationStatus
+  /** Soroban contract invocation transaction hash */
+  sorobanTxHash?: string
+  /** Deterministic agreement hash registered in Soroban */
+  sorobanAgreementHash?: string
+  /** Non-blocking companion-layer error for UI visibility */
+  sorobanError?: string
 }
 
 export interface CreatePaymentInput {

@@ -17,6 +17,9 @@ import {
   type HorizonClaimableBalance,
 } from '@/lib/stellar/query-payments'
 import type { WalletAdapter } from '@/lib/wallet/freighter-adapter'
+import { isSorobanCompanionEnabled } from '@/lib/soroban/client'
+import { runBestEffortWorkAgreementRegistration } from '@/lib/soroban/companion-registration'
+import { registerWorkAgreement } from '@/lib/soroban/register-work-agreement'
 
 /**
  * usePayments — manages the payment list and Stellar operations.
@@ -95,9 +98,23 @@ export function usePayments(wallet: WalletAdapter | null, employerAddress: strin
           status: 'locked',
           txHash,
           claimableBalanceId: claimableBalanceId ?? undefined,
+          sorobanRegistrationStatus:
+            claimableBalanceId && isSorobanCompanionEnabled() ? 'pending' : 'disabled',
+          sorobanError: undefined,
         })
 
         void refresh()
+
+        if (updated && claimableBalanceId && isSorobanCompanionEnabled()) {
+          void runBestEffortWorkAgreementRegistration({
+            register: () => registerWorkAgreement({ payment: updated, wallet }),
+            persist: (patch) => {
+              updatePayment(record.id, patch)
+            },
+            onSettled: refresh,
+          })
+        }
+
         return updated!
       } catch (err) {
         updatePayment(record.id, { status: 'failed' })

@@ -1,13 +1,14 @@
 # Design: CosechaPay MVP
 
 ## Technical Approach
-SPA frontend-only en React que interactúa directamente con Stellar Testnet mediante `@stellar/stellar-sdk` para escribir transacciones y Horizon API para leer estado on-chain. El escrow se implementa con **Claimable Balances**, evitando Soroban y backend para maximizar velocidad de entrega y confiabilidad de demo.
+SPA frontend-only en React que interactúa directamente con Stellar Testnet mediante `@stellar/stellar-sdk` para escribir transacciones y Horizon API / Soroban RPC para leer y registrar estado on-chain. El escrow se implementa con **Claimable Balances** como core. Soroban entra como **capa compañera mínima y best-effort**, sin reemplazar el mecanismo principal ni agregar backend.
 
 ## Architecture Decisions
 
 | Decisión | Choice | Alternativas consideradas | Rationale |
 |---|---|---|---|
-| Mecanismo escrow | Claimable Balances | Soroban custom contract | Resuelve el caso MVP sin Rust/WASM ni deploy adicional |
+| Mecanismo escrow | Claimable Balances | Soroban custom contract | Resuelve el caso MVP sin poner el release de fondos en código custom |
+| Companion layer | Soroban registry opt-in | Mantener todo fuera de Soroban | Agrega una prueba verificable del acuerdo sin bloquear el happy path |
 | Arquitectura app | Frontend-only SPA | React + Django API | Menos capas, menos puntos de falla, más velocidad |
 | Lectura de datos | Horizon API | Backend indexer propio | Para MVP alcanza con lectura directa on-chain |
 | Firma/autenticación | Freighter wallet | Auth tradicional o custodia propia | Reduce superficie técnica y mantiene demo real |
@@ -38,8 +39,10 @@ Worker view
 3. La app construye `createClaimableBalance`.
 4. Freighter firma y envía la transacción.
 5. Horizon confirma el balance y la app lo muestra como `locked`.
-6. Cosechero reclama el balance.
-7. La app vuelve a consultar Horizon y refleja `claimed`.
+6. La app intenta registrar en Soroban `claimable_balance_id -> agreement_hash`.
+7. Si Soroban falla, el pago sigue `locked` igual.
+8. Cosechero reclama el balance.
+9. La app vuelve a consultar Horizon y refleja `claimed`.
 
 ## Payment State Model
 
@@ -57,6 +60,7 @@ type PaymentRecord = {
   claimableBalanceId?: string
   createdAt: string
   txHash?: string
+  sorobanTxHash?: string
 }
 ```
 

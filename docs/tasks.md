@@ -31,6 +31,13 @@
 - [ ] Mejorar feedback visual: loading, errores, success states
 - [ ] Preparar datos/wallets/checklist de demo en vivo
 
+## Phase 6 — Soroban Companion Layer
+- [ ] Implementar contrato `WorkAgreementRegistry` con mapping `claimable_balance_id -> agreement_hash`
+- [ ] Conectar frontend a Soroban RPC con helper mínimo reutilizando Stellar SDK
+- [ ] Ejecutar registro Soroban solo post-escrow y de forma best-effort
+- [ ] Mostrar estado/TX Soroban en el detalle del pago
+- [ ] Mantener kill switch por ausencia de contract ID/configuración
+
 ## Definition of Done
 - [ ] El empleador puede conectar wallet
 - [ ] Puede crear un pago con address + monto
@@ -41,7 +48,7 @@
 - [ ] Existe checklist de demo y fallback básico
 
 ## Out of Scope
-- [ ] Soroban
+- [ ] Reemplazar Claimable Balances por Soroban
 - [ ] Backend Django
 - [ ] Auth tradicional
 - [ ] Reportes complejos

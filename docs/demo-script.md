@@ -75,12 +75,13 @@ Después de crear, entrar al detalle.
 
 Decir:
 
-> Ahora el pago quedó bloqueado on-chain. Vemos el estado, la transacción y el claimable balance ID.
+> Ahora el pago quedó bloqueado on-chain. Y además, sin tocar el escrow principal, registramos en Soroban un hash verificable del acuerdo como capa compañera.
 
 Mostrar:
 - estado **Bloqueado**
 - TX creación
 - Claimable Balance ID
+- estado/TX de registro Soroban si está configurado
 - links al explorer
 
 ### 6. Cambiar a la wallet del cosechero
@@ -124,7 +125,8 @@ Mostrar:
 ## Qué remarcar en el pitch
 - problema real y local
 - blockchain usada para confianza, no decoración
-- sin backend ni contrato custom para el MVP
+- escrow nativo con Claimable Balances como core
+- Soroban como companion layer verificable, no como dependencia obligatoria del happy path
 - demo real en Stellar Testnet
 - extensible a reglas más complejas en una siguiente fase
 

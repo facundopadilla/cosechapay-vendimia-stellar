@@ -32,6 +32,23 @@ function formatDate(iso: string) {
   })
 }
 
+function getSorobanStatusCopy(payment: PaymentRecord) {
+  switch (payment.sorobanRegistrationStatus) {
+    case 'registered':
+      return 'Registrado en Soroban como capa compañera del acuerdo.'
+    case 'submitted':
+      return 'La transacción Soroban fue enviada y quedó pendiente de confirmación.'
+    case 'pending':
+      return 'Registrando acuerdo en Soroban…'
+    case 'failed':
+      return 'El registro Soroban falló, pero el escrow principal sigue activo.'
+    case 'disabled':
+      return 'La capa compañera Soroban no está configurada en este entorno.'
+    default:
+      return null
+  }
+}
+
 export function PaymentDetailPage({ wallet, onClaim, onSync }: PaymentDetailPageProps) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -113,6 +130,7 @@ export function PaymentDetailPage({ wallet, onClaim, onSync }: PaymentDetailPage
 
   const isLocked = payment.status === 'locked'
   const releaseAt = calculateReleaseAt(payment.createdAt, payment.releaseDelaySeconds)
+  const sorobanStatusCopy = getSorobanStatusCopy(payment)
 
   return (
     <div className="detail-page">
@@ -227,6 +245,42 @@ export function PaymentDetailPage({ wallet, onClaim, onSync }: PaymentDetailPage
               >
                 {payment.claimTxHash.slice(0, 16)}… ↗
               </a>
+            </div>
+          )}
+
+          {payment.sorobanRegistrationStatus && (
+            <div className="detail-page__field detail-page__field--wide">
+              <span className="detail-page__label">Registro Soroban</span>
+              <div className="detail-page__value detail-page__soroban-block">
+                {sorobanStatusCopy && (
+                  <span
+                    className={`detail-page__soroban-status detail-page__soroban-status--${payment.sorobanRegistrationStatus}`}
+                  >
+                    {sorobanStatusCopy}
+                  </span>
+                )}
+
+                {payment.sorobanTxHash && (
+                  <a
+                    href={txExplorerUrl(payment.sorobanTxHash)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mono"
+                  >
+                    TX Soroban: {payment.sorobanTxHash.slice(0, 16)}… ↗
+                  </a>
+                )}
+
+                {payment.sorobanAgreementHash && (
+                  <span className="mono detail-page__soroban-hash">
+                    Hash acuerdo: {payment.sorobanAgreementHash}
+                  </span>
+                )}
+
+                {payment.sorobanError && (
+                  <span className="detail-page__soroban-error">{payment.sorobanError}</span>
+                )}
+              </div>
             </div>
           )}
         </div>

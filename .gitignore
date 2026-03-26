@@ -1,8 +1,11 @@
 node_modules/
 dist/
+target/
+Cargo.lock
 .DS_Store
 .agents/
 .opencode/
+.stellar/
 .env
 .env.*
 npm-debug.log*
