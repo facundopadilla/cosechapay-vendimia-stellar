@@ -1,0 +1,1229 @@
+/* ─── Pitch Deck ─── */
+
+.pitch {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+/* ─── Sponsor logos bar ─── */
+
+.pitch__logos {
+  position: fixed;
+  top: 3px; /* debajo de la progress bar */
+  left: 0;
+  right: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 0 28px;
+  z-index: 110;
+}
+
+.pitch__logo {
+  height: 26px;
+  width: auto;
+  object-fit: contain;
+}
+
+.pitch__logo--stellar {
+  height: 22px;
+  filter: grayscale(1);
+  opacity: 0.75;
+}
+
+.pitch__logos-sep {
+  font-size: 13px;
+  color: var(--color-text-subtle);
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* ─── Progress Bar ─── */
+
+.pitch__progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-border);
+  z-index: 100;
+}
+
+.pitch__progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Nav hint ─── */
+
+.pitch__nav-hint {
+  position: fixed;
+  bottom: 28px;
+  right: 36px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--color-text-subtle);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.pitch__nav-keys {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.pitch__nav-keys kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 22px;
+  padding: 0 6px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: var(--font-sans);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+/* ─── Slides ─── */
+
+.pitch__slide {
+  position: absolute;
+  top: 51px; /* logos bar (48px) + progress bar (3px) */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateX(60px);
+  pointer-events: none;
+  transition:
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-direction="prev"] .pitch__slide {
+  transform: translateX(-60px);
+}
+
+.pitch__slide--active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.pitch__slide-inner {
+  width: 100%;
+  max-width: 960px;
+  padding: 40px 56px;
+}
+
+/* ─── Staggered reveal for active slide children ─── */
+
+@keyframes pitchFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pitch__slide--active .pitch__slide-label,
+.pitch__slide--active .pitch__tag {
+  animation: pitchFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+.pitch__slide--active .pitch__slide-title,
+.pitch__slide--active .pitch__hero-title {
+  animation: pitchFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.pitch__slide--active .pitch__slide-desc,
+.pitch__slide--active .pitch__hero-tagline,
+.pitch__slide--active .pitch__points,
+.pitch__slide--active .pitch__steps,
+.pitch__slide--active .pitch__arch-grid,
+.pitch__slide--active .pitch__flow,
+.pitch__slide--active .pitch__demo-checklist,
+.pitch__slide--active .pitch__reasons,
+.pitch__slide--active .pitch__quote {
+  animation: pitchFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
+}
+
+.pitch__slide--active .pitch__hero-sub,
+.pitch__slide--active .pitch__flow-labels,
+.pitch__slide--active .pitch__flow-note {
+  animation: pitchFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+/* ─── Shared elements ─── */
+
+.pitch__tag {
+  display: inline-flex;
+  padding: 5px 14px;
+  border: 1px solid var(--color-primary);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary-text);
+  margin-bottom: 28px;
+}
+
+.pitch__slide-label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  margin-bottom: 16px;
+}
+
+.pitch__slide-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin-bottom: 28px;
+  max-width: 720px;
+}
+
+.pitch__slide-title em {
+  color: var(--color-secondary);
+  font-style: italic;
+}
+
+.pitch__slide-desc {
+  font-size: 17px;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  max-width: 620px;
+  margin-bottom: 32px;
+}
+
+/* ─── Slide 0: Title ─── */
+
+.pitch__slide--title {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pitch__hero-title {
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  margin-bottom: 20px;
+}
+
+.pitch__logo-leaf {
+  display: inline-block;
+  font-size: 0.85em;
+}
+
+.pitch__hero-tagline {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-bottom: 20px;
+}
+
+.pitch__hero-tagline em {
+  color: var(--color-secondary);
+  font-style: italic;
+}
+
+.pitch__hero-sub {
+  font-size: 15px;
+  color: var(--color-text-subtle);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Slide 1: Problem — Points ─── */
+
+.pitch__points {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.pitch__point {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px 24px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.pitch__point:hover {
+  border-color: var(--color-secondary);
+  transform: translateX(4px);
+}
+
+.pitch__point-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pitch__point h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.pitch__point p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* ─── Slide 2: Solution — Quote ─── */
+
+.pitch__quote {
+  margin-top: 8px;
+  padding: 24px 28px;
+  border-left: 3px solid var(--color-secondary);
+  background: var(--color-surface);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.pitch__quote blockquote {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* ─── Slide 3: How it works — Steps ─── */
+
+.pitch__steps {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.pitch__step-card {
+  flex: 1;
+  padding: 28px 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.pitch__step-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+}
+
+.pitch__step-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1;
+  color: var(--color-primary);
+  opacity: 0.35;
+  margin-bottom: 16px;
+}
+
+.pitch__step-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.pitch__step-card p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.pitch__step-arrow {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  color: var(--color-text-subtle);
+  flex-shrink: 0;
+}
+
+/* ─── Slide 4: Architecture Grid ─── */
+
+.pitch__arch-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.pitch__arch-card {
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.pitch__arch-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
+}
+
+.pitch__arch-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.pitch__arch-card p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+/* ─── Slide 5: Data Flow ─── */
+
+.pitch__flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 32px 0 16px;
+}
+
+.pitch__flow-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.pitch__flow-node--user {
+  background: var(--color-secondary-surface);
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
+}
+
+.pitch__flow-node--app {
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.pitch__flow-node--wallet {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.pitch__flow-node--chain {
+  background: var(--color-text);
+  border: 1px solid var(--color-text);
+  color: var(--color-bg);
+}
+
+.pitch__flow-connector {
+  width: 40px;
+  height: 2px;
+  background: var(--color-border-strong);
+  position: relative;
+}
+
+.pitch__flow-connector::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid var(--color-border-strong);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+.pitch__flow-labels {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 60px;
+  margin-bottom: 24px;
+}
+
+.pitch__flow-labels span {
+  font-size: 12px;
+  color: var(--color-text-subtle);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.pitch__flow-note {
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ─── Slide 6: Demo Checklist ─── */
+
+.pitch__slide--demo {
+  display: flex;
+  flex-direction: column;
+}
+
+.pitch__demo-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.pitch__demo-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 15px;
+  color: var(--color-text);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.pitch__demo-item:hover {
+  border-color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.pitch__demo-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ─── Slide 7: Why Stellar — Reasons ─── */
+
+.pitch__reasons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.pitch__reason {
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.pitch__reason:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
+}
+
+.pitch__reason h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.pitch__reason p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+/* ─── Slide 8: Closing ─── */
+
+.pitch__slide--closing {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pitch__closing-title {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin-bottom: 40px;
+}
+
+.pitch__closing-title em {
+  color: var(--color-secondary);
+  font-style: italic;
+}
+
+.pitch__closing-brand {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+
+.pitch__closing-sub {
+  font-size: 15px;
+  color: var(--color-text-subtle);
+}
+
+/* ─── Split layout (text left + mockup right) ─── */
+
+.pitch__slide-inner--split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 52px;
+  align-items: start;
+  max-width: 1080px;
+}
+
+/* Título más compacto en split para que quepa en una línea */
+.pitch__slide-inner--split .pitch__slide-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+/* Layout con header arriba + grid debajo (slide 3) */
+.pitch__slide-inner--stacked {
+  width: 100%;
+  max-width: 1080px;
+  padding: 40px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pitch__slide-header {
+  display: flex;
+  flex-direction: column;
+}
+
+/* El split anidado dentro del stacked no necesita padding propio */
+.pitch__slide-inner--split-flush {
+  padding: 0;
+  max-width: none;
+  width: 100%;
+}
+
+/* Steps en split-flush quedan verticales igual */
+.pitch__slide-inner--split-flush .pitch__steps {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pitch__slide-inner--split-flush .pitch__step-card {
+  padding: 16px 18px;
+}
+
+.pitch__slide-inner--split-flush .pitch__step-num {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.pitch__slide-inner--split-flush .pitch__step-card h3 {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.pitch__slide-inner--split-flush .pitch__step-card p {
+  font-size: 12px;
+}
+
+.pitch__slide-inner--split-flush .pitch__step-arrow {
+  transform: rotate(90deg);
+  align-self: center;
+  font-size: 16px;
+}
+
+.pitch__slide-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Vertical steps when inside split (narrower left col) */
+.pitch__slide-inner--split .pitch__steps {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pitch__slide-inner--split .pitch__step-card {
+  padding: 16px 18px;
+}
+
+.pitch__slide-inner--split .pitch__step-num {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.pitch__slide-inner--split .pitch__step-card h3 {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.pitch__slide-inner--split .pitch__step-card p {
+  font-size: 12px;
+}
+
+.pitch__slide-inner--split .pitch__step-arrow {
+  transform: rotate(90deg);
+  align-self: center;
+  font-size: 16px;
+}
+
+/* Stagger for split slides */
+.pitch__slide--active .pitch__slide-content .pitch__slide-label,
+.pitch__slide--active .pitch__slide-content .pitch__tag {
+  animation: pitchFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+.pitch__slide--active .pitch__slide-content .pitch__slide-title,
+.pitch__slide--active .pitch__slide-content .pitch__hero-title {
+  animation: pitchFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.pitch__slide--active .pitch__slide-content .pitch__slide-desc,
+.pitch__slide--active .pitch__slide-content .pitch__hero-tagline,
+.pitch__slide--active .pitch__slide-content .pitch__steps,
+.pitch__slide--active .pitch__slide-content .pitch__demo-checklist,
+.pitch__slide--active .pitch__slide-content .pitch__quote {
+  animation: pitchFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
+}
+
+.pitch__slide--active .pitch__slide-content .pitch__hero-sub {
+  animation: pitchFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+.pitch__slide--active .pitch__mockup {
+  animation: pitchFadeIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.38s both;
+}
+
+/* ─── Browser frame mockup ─── */
+
+.pitch__mockup {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--color-border-strong);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 0.12), 0 4px 16px rgb(0 0 0 / 0.06);
+  background: var(--color-surface);
+}
+
+.pitch__mockup-chrome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--color-surface-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pitch__mockup-dots {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.pitch__mockup-dots i {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.pitch__mockup-dots i:nth-child(1) { background: #ff5f57; }
+.pitch__mockup-dots i:nth-child(2) { background: #febc2e; }
+.pitch__mockup-dots i:nth-child(3) { background: #28c840; }
+
+.pitch__mockup-url {
+  flex: 1;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 10px;
+  color: var(--color-text-subtle);
+  font-family: var(--font-mono);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pitch__mockup-screen {
+  padding: 0;
+  background: var(--color-bg);
+  min-height: 280px;
+}
+
+/* ─── Mockup interior components (pitch__m-*) ─── */
+
+.pitch__m-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgb(255 255 255 / 0.92);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 12px;
+}
+
+.pitch__m-logo {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.pitch__m-wallet {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+
+.pitch__m-pill {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.pitch__m-pill--warning {
+  background: var(--color-warning-light);
+  color: var(--color-warning);
+  border: 1px solid #fde68a;
+}
+
+/* Hero mockup */
+.pitch__m-hero {
+  padding: 20px 16px 16px;
+}
+
+.pitch__m-hero-tag {
+  display: inline-flex;
+  padding: 3px 8px;
+  border: 1px solid var(--color-primary);
+  border-radius: 999px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary-text);
+  margin-bottom: 12px;
+}
+
+.pitch__m-hero-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--color-text);
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+
+.pitch__m-hero-accent {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--color-secondary);
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.pitch__m-hero-sub {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.pitch__m-cta {
+  display: inline-flex;
+  padding: 7px 12px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+}
+
+/* Body */
+.pitch__m-body {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pitch__m-back {
+  font-size: 10px;
+  color: var(--color-primary);
+  margin-bottom: 2px;
+}
+
+.pitch__m-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pitch__m-card--payment {
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.pitch__m-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pitch__m-amount {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.pitch__m-badge {
+  display: inline-flex;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.pitch__m-badge--warning {
+  background: var(--color-warning-light);
+  color: var(--color-warning);
+}
+
+.pitch__m-badge--success {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.pitch__m-field {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.pitch__m-field-label {
+  font-size: 9px;
+  color: var(--color-text-subtle);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.pitch__m-field-mono {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--color-text-muted);
+}
+
+.pitch__m-field-val {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.pitch__m-link {
+  font-size: 9px;
+  color: var(--color-primary);
+  margin-top: 2px;
+}
+
+.pitch__m-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.pitch__m-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.pitch__m-new-btn {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-surface);
+  background: var(--color-primary);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Mockup flow variant (slide 3) ─── */
+
+.pitch__mockup--flow .pitch__mockup-screen--flow {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pitch__m-flow-step {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+.pitch__m-flow-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+  margin-bottom: 8px;
+}
+
+.pitch__m-flow-arrow {
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text-subtle);
+  line-height: 1;
+  padding: 2px 0;
+}
+
+.pitch__m-mini-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pitch__m-mini-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pitch__m-mini-field span {
+  font-size: 8px;
+  color: var(--color-text-subtle);
+  font-weight: 600;
+}
+
+.pitch__m-mini-input {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+  padding: 3px 7px;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.pitch__m-mini-btn {
+  display: inline-flex;
+  justify-content: center;
+  background: var(--color-primary);
+  color: var(--color-surface);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.pitch__m-mini-card {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pitch__m-mini-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pitch__m-mini-row strong {
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.pitch__m-mini-mono {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--color-text-subtle);
+}
+
+/* ─── Click nav zones ─── */
+
+.pitch__nav-zone {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 18%;
+  z-index: 90;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.pitch__nav-zone:disabled {
+  cursor: default;
+}
+
+.pitch__nav-zone--prev {
+  left: 0;
+}
+
+.pitch__nav-zone--next {
+  right: 0;
+}
+
+/* ─── Responsive ─── */
+
+@media (max-width: 780px) {
+  .pitch__slide-inner {
+    padding: 32px 24px;
+  }
+
+  .pitch__slide-inner--split {
+    grid-template-columns: 1fr;
+  }
+
+  .pitch__mockup {
+    display: none;
+  }
+
+  .pitch__hero-title {
+    font-size: 48px;
+  }
+
+  .pitch__hero-tagline {
+    font-size: 24px;
+  }
+
+  .pitch__slide-title {
+    font-size: 32px;
+  }
+
+  .pitch__closing-title {
+    font-size: 38px;
+  }
+
+  .pitch__steps {
+    flex-direction: column;
+  }
+
+  .pitch__step-arrow {
+    transform: rotate(90deg);
+    align-self: center;
+    font-size: 20px;
+  }
+
+  .pitch__arch-grid,
+  .pitch__reasons {
+    grid-template-columns: 1fr;
+  }
+
+  .pitch__flow {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pitch__flow-connector {
+    width: 2px;
+    height: 24px;
+  }
+
+  .pitch__flow-connector::after {
+    right: auto;
+    bottom: -1px;
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid var(--color-border-strong);
+    border-bottom: none;
+  }
+
+  .pitch__flow-labels {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+  }
+
+  .pitch__nav-hint {
+    bottom: 16px;
+    right: 20px;
+  }
+}

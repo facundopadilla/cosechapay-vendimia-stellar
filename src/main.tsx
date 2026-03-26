@@ -1,8 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import { Providers } from './app/providers'
+import { PitchPage } from './pages/pitch-page'
 
 const rootEl = document.getElementById('root')
 if (!rootEl) throw new Error('No se encontró el elemento #root')
@@ -10,7 +11,10 @@ if (!rootEl) throw new Error('No se encontró el elemento #root')
 createRoot(rootEl).render(
   <StrictMode>
     <BrowserRouter>
-      <Providers />
+      <Routes>
+        <Route path="/pitch" element={<PitchPage />} />
+        <Route path="/*" element={<Providers />} />
+      </Routes>
     </BrowserRouter>
   </StrictMode>
 )
