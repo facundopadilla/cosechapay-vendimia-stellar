@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import type { PaymentRecord } from '@/types/payment'
 import { PaymentStatusBadge } from './payment-status-badge'
-import { balanceExplorerUrl, txExplorerUrl } from '@/lib/stellar/client'
+import { txExplorerUrl } from '@/lib/stellar/client'
 import './payment-card.css'
 
 interface PaymentCardProps {
@@ -48,26 +48,15 @@ export function PaymentCard({ payment }: PaymentCardProps) {
         <p className="payment-card__desc">{payment.description}</p>
       )}
 
-      {(payment.claimableBalanceId || payment.txHash) && (
+      {payment.txHash && (
         <div className="payment-card__links">
-          {payment.claimableBalanceId && (
-            <button
-              type="button"
-              className="payment-card__link"
-              onClick={() => window.open(balanceExplorerUrl(payment.claimableBalanceId!), '_blank', 'noopener,noreferrer')}
-            >
-              Ver balance ↗
-            </button>
-          )}
-          {payment.txHash && (
-            <button
-              type="button"
-              className="payment-card__link"
-              onClick={() => window.open(txExplorerUrl(payment.txHash!), '_blank', 'noopener,noreferrer')}
-            >
-              Ver tx ↗
-            </button>
-          )}
+          <button
+            type="button"
+            className="payment-card__link"
+            onClick={() => window.open(txExplorerUrl(payment.txHash!), '_blank', 'noopener,noreferrer')}
+          >
+            Ver tx ↗
+          </button>
         </div>
       )}
     </Link>

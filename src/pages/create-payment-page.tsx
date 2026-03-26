@@ -3,7 +3,7 @@ import type { WalletState, CreatePaymentInput, PaymentRecord } from '@/types/pay
 import { PaymentForm } from '@/components/payments/payment-form'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import { balanceExplorerUrl, txExplorerUrl } from '@/lib/stellar/client'
+import { txExplorerUrl } from '@/lib/stellar/client'
 import './create-payment-page.css'
 
 interface CreatePaymentPageProps {
@@ -49,15 +49,6 @@ export function CreatePaymentPage({ wallet, onCreatePayment }: CreatePaymentPage
           {createdPayment.txHash && (
             <a href={txExplorerUrl(createdPayment.txHash)} target="_blank" rel="noopener noreferrer">
               Ver transacción ↗
-            </a>
-          )}
-          {createdPayment.claimableBalanceId && (
-            <a
-              href={balanceExplorerUrl(createdPayment.claimableBalanceId)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver balance ↗
             </a>
           )}
         </div>
