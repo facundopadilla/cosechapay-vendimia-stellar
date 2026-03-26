@@ -6,9 +6,9 @@
 
 /* Header */
 .app-header {
-  background: rgb(255 255 255 / 0.9);
-  border-bottom: 1px solid rgb(201 193 174 / 0.8);
-  backdrop-filter: blur(10px);
+  background: rgb(255 255 255 / 0.92);
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -32,8 +32,9 @@
 }
 
 .app-header__logo {
-  font-weight: 700;
-  font-size: 16px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 18px;
   letter-spacing: -0.01em;
   color: var(--color-text);
   text-decoration: none;
@@ -80,7 +81,7 @@
 }
 
 .app-nav__link--active {
-  background-color: var(--color-secondary-surface);
+  background-color: var(--color-primary-light);
   color: var(--color-primary-text);
 }
 
@@ -110,17 +111,17 @@
 
 .app-layout__wallet-status {
   padding: 12px 14px;
-  border: 1px solid #c7d2fe;
-  background-color: #eef2ff;
-  color: #4338ca;
+  border: 1px solid var(--color-border-strong);
+  background-color: var(--color-info-light);
+  color: var(--color-info);
   border-radius: var(--radius);
   font-size: 14px;
 }
 
 .app-layout__wallet-status--error {
-  border: 1px solid #fecaca;
-  background-color: #fef2f2;
-  color: #991b1b;
+  border: 1px solid var(--color-danger-light);
+  background-color: var(--color-danger-light);
+  color: var(--color-danger);
 }
 
 /* Footer */

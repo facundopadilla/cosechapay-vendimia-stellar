@@ -33,7 +33,7 @@
 .btn--primary:hover:not(:disabled) {
   background-color: var(--color-primary-hover);
   border-color: var(--color-primary-hover);
-  box-shadow: 0 8px 18px rgb(107 79 211 / 0.22);
+  box-shadow: 0 8px 18px rgb(45 106 79 / 0.28);
 }
 
 .btn--secondary {
@@ -79,7 +79,7 @@
 
 .btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgb(107 79 211 / 0.18);
+  box-shadow: 0 0 0 3px rgb(45 106 79 / 0.22);
 }
 
 @keyframes btn-spin {

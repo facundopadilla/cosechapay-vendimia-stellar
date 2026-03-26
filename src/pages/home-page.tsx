@@ -88,7 +88,11 @@ export function HomePage({
       {/* Hero / intro when no wallet connected */}
       {!wallet.isConnected && (
         <div className="home-page__hero">
-          <h1 className="home-page__title">Pagos de cosecha bloqueados on-chain</h1>
+          <span className="home-page__hero-tag">Stellar Testnet</span>
+          <h1 className="home-page__title">
+            La cosecha
+            <em className="home-page__title-accent">se paga seguro.</em>
+          </h1>
           <p className="home-page__subtitle">
             El empleador bloquea el pago antes de que empiece la cosecha.
             El cosechero sabe que el dinero está ahí.
@@ -275,24 +279,24 @@ export function HomePage({
 
       {/* How it works — always visible */}
       {showExplainer && <div className="home-page__explainer">
-        <h3 className="home-page__explainer-title">¿Cómo funciona?</h3>
-        <ol className="home-page__steps">
-          <li>
-            <strong>Conectás tu wallet</strong> Freighter (empleador)
-          </li>
-          <li>
-            <strong>Creás un pago</strong> con la dirección del cosechero y el monto en XLM
-          </li>
-          <li>
-            <strong>Los fondos quedan bloqueados</strong> on-chain como Claimable Balance en Stellar Testnet
-          </li>
-          <li>
-            El cosechero <strong>reclama el balance</strong> con su propia wallet
-          </li>
-          <li>
-            Todo queda <strong>visible en el explorer</strong> de Stellar
-          </li>
-        </ol>
+        <h3 className="home-page__explainer-title">Cómo funciona</h3>
+        <div className="home-page__steps-grid">
+          <div className="home-page__step">
+            <span className="home-page__step-num">01</span>
+            <h4 className="home-page__step-title">Bloqueá el pago</h4>
+            <p className="home-page__step-desc">El empleador crea el pago y los fondos quedan bloqueados on-chain como Claimable Balance en Stellar.</p>
+          </div>
+          <div className="home-page__step">
+            <span className="home-page__step-num">02</span>
+            <h4 className="home-page__step-title">Cosechá tranquilo</h4>
+            <p className="home-page__step-desc">El cosechero ve que el dinero está ahí, bloqueado y esperando. El trabajo empieza con garantía real.</p>
+          </div>
+          <div className="home-page__step">
+            <span className="home-page__step-num">03</span>
+            <h4 className="home-page__step-title">Reclamá y listo</h4>
+            <p className="home-page__step-desc">Cuando termina el trabajo, el cosechero reclama el balance con su wallet. Todo queda visible en el explorer.</p>
+          </div>
+        </div>
       </div>}
     </div>
   )
