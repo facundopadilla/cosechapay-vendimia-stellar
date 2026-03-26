@@ -1,0 +1,83 @@
+.claimable-balance-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.claimable-balance-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.claimable-balance-card__amount {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.claimable-balance-card__asset {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary-text);
+}
+
+.claimable-balance-card__subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.claimable-balance-card__meta {
+  display: grid;
+  gap: 14px;
+}
+
+.claimable-balance-card__label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-subtle);
+}
+
+.claimable-balance-card__value {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  word-break: break-all;
+}
+
+.claimable-balance-card__value--wide {
+  line-height: 1.6;
+}
+
+.claimable-balance-card__error {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid #fecaca;
+  background-color: #fef2f2;
+  color: #991b1b;
+  font-size: 13px;
+}
+
+.claimable-balance-card__lock-note {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+}
+
+.claimable-balance-card__lock-copy {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}

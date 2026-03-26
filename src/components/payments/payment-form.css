@@ -1,0 +1,20 @@
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.payment-form__error {
+  padding: 10px 14px;
+  background-color: var(--color-danger-light);
+  border: 1px solid #fecaca;
+  border-radius: var(--radius);
+  color: var(--color-danger);
+  font-size: 13px;
+}
+
+.payment-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 4px;
+}

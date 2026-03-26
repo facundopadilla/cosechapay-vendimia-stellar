@@ -1,0 +1,14 @@
+.wallet-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wallet-info__key {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background-color: var(--color-neutral-light);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
