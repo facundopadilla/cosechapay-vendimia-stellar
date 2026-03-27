@@ -2,6 +2,10 @@
 
 > 🌾 Pagos de cosecha bloqueados on-chain en Stellar, con escrow nativo y una capa Soroban verificable.
 
+<p align="center">
+  <img src="docs/assets/cosechapay.png" alt="Logo de CosechaPay" width="220" />
+</p>
+
 ![React](https://img.shields.io/badge/React-18-1f6feb?style=for-the-badge&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178c6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5-f59e0b?style=for-the-badge&logo=vite&logoColor=white)
