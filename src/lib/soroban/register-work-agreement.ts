@@ -2,7 +2,11 @@ import { BASE_FEE, Contract, TransactionBuilder, xdr } from '@stellar/stellar-sd
 import { STELLAR_NETWORK, txExplorerUrl } from '@/lib/stellar/client'
 import type { PaymentRecord, SorobanRegistrationStatus } from '@/types/payment'
 import type { WalletAdapter } from '@/lib/wallet/freighter-adapter'
-import { getSorobanCompanionConfig, getSorobanRpcServer } from './client'
+import {
+  getSorobanCompanionConfig,
+  getSorobanRpcServer,
+  getSorobanTransactionStatus,
+} from './client'
 
 const POLL_ATTEMPTS = 8
 const POLL_INTERVAL_MS = 1200
@@ -74,14 +78,13 @@ export async function buildWorkAgreementHash(agreement: HashableAgreement): Prom
 }
 
 async function waitForFinalStatus(
-  server: ReturnType<typeof getSorobanRpcServer>,
   hash: string
 ): Promise<FinalSorobanRegistrationStatus> {
   for (let attempt = 0; attempt < POLL_ATTEMPTS; attempt += 1) {
-    const response = await server.getTransaction(hash)
+    const status = await getSorobanTransactionStatus(hash)
 
-    if (response.status === 'SUCCESS') return 'registered'
-    if (response.status === 'FAILED') return 'failed'
+    if (status === 'SUCCESS') return 'registered'
+    if (status === 'FAILED') return 'failed'
 
     await sleep(POLL_INTERVAL_MS)
   }
@@ -151,7 +154,7 @@ export async function registerWorkAgreement({
       }
     }
 
-    const finalStatus = await waitForFinalStatus(server, sendResult.hash)
+    const finalStatus = await waitForFinalStatus(sendResult.hash)
 
     return {
       status: finalStatus,
