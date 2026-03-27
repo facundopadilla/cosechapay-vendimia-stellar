@@ -50,6 +50,8 @@ export function RouterProvider({ wallet, payments }: RouterProviderProps) {
           <CreatePaymentPage
             wallet={wallet}
             onCreatePayment={payments.createPayment}
+            onRegisterSoroban={payments.registerPaymentInSoroban}
+            onSkipSoroban={payments.skipSorobanRegistration}
           />
         }
       />
@@ -59,7 +61,8 @@ export function RouterProvider({ wallet, payments }: RouterProviderProps) {
           <PaymentDetailPage
             wallet={wallet}
             onClaim={payments.claimPayment}
-            onRetrySoroban={payments.registerPaymentInSoroban}
+            onRegisterSoroban={payments.registerPaymentInSoroban}
+            onSkipSoroban={payments.skipSorobanRegistration}
             onSync={payments.syncPaymentStatus}
           />
         }

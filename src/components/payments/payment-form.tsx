@@ -8,6 +8,7 @@ import './payment-form.css'
 interface PaymentFormProps {
   onSubmit: (input: CreatePaymentInput) => Promise<void>
   submitting?: boolean
+  sorobanEnabled?: boolean
 }
 
 interface FormErrors {
@@ -25,7 +26,7 @@ function isValidAmount(amount: string): boolean {
   return !isNaN(n) && n > 0 && n <= 999_999_999
 }
 
-export function PaymentForm({ onSubmit, submitting = false }: PaymentFormProps) {
+export function PaymentForm({ onSubmit, submitting = false, sorobanEnabled = false }: PaymentFormProps) {
   const [claimantAddress, setClaimantAddress] = useState('')
   const [amount, setAmount] = useState('')
   const [releaseDelaySeconds, setReleaseDelaySeconds] = useState<number>(60)
@@ -137,9 +138,15 @@ export function PaymentForm({ onSubmit, submitting = false }: PaymentFormProps) 
 
       <div className="payment-form__actions">
         <Button type="submit" variant="primary" size="lg" loading={submitting}>
-          {submitting ? 'Bloqueando fondos…' : 'Crear y bloquear fondos'}
+          {submitting ? 'Revisá Freighter…' : 'Crear y bloquear fondos'}
         </Button>
       </div>
+
+      {submitting && sorobanEnabled && (
+        <p className="payment-form__hint">
+          Freighter puede abrirse dos veces: primero para el escrow y después para el registro Soroban.
+        </p>
+      )}
     </form>
   )
 }

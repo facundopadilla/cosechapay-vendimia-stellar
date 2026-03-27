@@ -111,6 +111,21 @@ export function usePayments(wallet: WalletAdapter | null, employerAddress: strin
     [wallet, employerAddress, refresh]
   )
 
+  const skipSorobanRegistration = useCallback(
+    async (paymentId: string): Promise<void> => {
+      const payment = getPaymentById(paymentId)
+      if (!payment) throw new Error('Pago no encontrado')
+
+      updatePayment(paymentId, {
+        sorobanRegistrationStatus: 'skipped',
+        sorobanError: undefined,
+      })
+
+      await refresh()
+    },
+    [refresh]
+  )
+
   /**
    * Create a new payment:
    * 1. Save a local draft record with status=submitting
@@ -157,10 +172,6 @@ export function usePayments(wallet: WalletAdapter | null, employerAddress: strin
         })
 
         void refresh()
-
-        if (updated && claimableBalanceId && isSorobanCompanionEnabled()) {
-          void registerPaymentInSoroban(record.id)
-        }
 
         return updated!
       } catch (err) {
@@ -291,6 +302,7 @@ export function usePayments(wallet: WalletAdapter | null, employerAddress: strin
     refresh,
     createPayment,
     registerPaymentInSoroban,
+    skipSorobanRegistration,
     claimPayment,
     claimClaimableBalance,
     syncPaymentStatus,

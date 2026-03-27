@@ -19,7 +19,8 @@ import './payment-detail-page.css'
 interface PaymentDetailPageProps {
   wallet: WalletState
   onClaim: (paymentId: string) => Promise<void>
-  onRetrySoroban: (paymentId: string) => Promise<void>
+  onRegisterSoroban: (paymentId: string) => Promise<void>
+  onSkipSoroban: (paymentId: string) => Promise<void>
   onSync: (paymentId: string) => Promise<void>
 }
 
@@ -44,7 +45,9 @@ function getSorobanStatusCopy(payment: PaymentRecord) {
     case 'submitted':
       return 'La transacción Soroban fue enviada y quedó pendiente de confirmación.'
     case 'pending':
-      return 'Registrando acuerdo en Soroban…'
+      return 'El acuerdo todavía no fue enviado a Soroban.'
+    case 'skipped':
+      return 'Se omitió Soroban por ahora. El escrow principal sigue activo.'
     case 'failed':
       return 'El registro Soroban falló, pero el escrow principal sigue activo.'
     case 'disabled':
@@ -54,13 +57,20 @@ function getSorobanStatusCopy(payment: PaymentRecord) {
   }
 }
 
-export function PaymentDetailPage({ wallet, onClaim, onRetrySoroban, onSync }: PaymentDetailPageProps) {
+export function PaymentDetailPage({
+  wallet,
+  onClaim,
+  onRegisterSoroban,
+  onSkipSoroban,
+  onSync,
+}: PaymentDetailPageProps) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [payment, setPayment] = useState<PaymentRecord | null>(null)
   const [claiming, setClaiming] = useState(false)
   const [syncing, setSyncing] = useState(false)
   const [retryingSoroban, setRetryingSoroban] = useState(false)
+  const [skippingSoroban, setSkippingSoroban] = useState(false)
   const [copyingBalanceId, setCopyingBalanceId] = useState(false)
   const [claimError, setClaimError] = useState<string | null>(null)
   const [sorobanActionError, setSorobanActionError] = useState<string | null>(null)
@@ -121,18 +131,33 @@ export function PaymentDetailPage({ wallet, onClaim, onRetrySoroban, onSync }: P
     }
   }
 
-  async function handleRetrySoroban() {
+  async function handleRegisterSoroban() {
     if (!id) return
     setRetryingSoroban(true)
     setSorobanActionError(null)
     try {
-      await onRetrySoroban(id)
+      await onRegisterSoroban(id)
       loadPayment()
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'No se pudo reintentar el registro Soroban.'
+      const msg = err instanceof Error ? err.message : 'No se pudo registrar en Soroban.'
       setSorobanActionError(msg)
     } finally {
       setRetryingSoroban(false)
+    }
+  }
+
+  async function handleSkipSoroban() {
+    if (!id) return
+    setSkippingSoroban(true)
+    setSorobanActionError(null)
+    try {
+      await onSkipSoroban(id)
+      loadPayment()
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'No se pudo omitir Soroban por ahora.'
+      setSorobanActionError(msg)
+    } finally {
+      setSkippingSoroban(false)
     }
   }
 
@@ -170,9 +195,9 @@ export function PaymentDetailPage({ wallet, onClaim, onRetrySoroban, onSync }: P
   const hasExplorerCompatibleBalanceId = Boolean(
     payment.claimableBalanceId && isExplorerCompatibleClaimableBalanceId(payment.claimableBalanceId)
   )
-  const canRetrySoroban =
+  const canManageSoroban =
     payment.status === 'locked' &&
-    payment.sorobanRegistrationStatus === 'failed' &&
+    ['pending', 'failed', 'skipped'].includes(payment.sorobanRegistrationStatus ?? '') &&
     wallet.isConnected &&
     wallet.publicKey === payment.employerAddress
 
@@ -338,10 +363,17 @@ export function PaymentDetailPage({ wallet, onClaim, onRetrySoroban, onSync }: P
                   <span className="detail-page__soroban-error">{payment.sorobanError}</span>
                 )}
 
-                {canRetrySoroban && (
+                {canManageSoroban && (
                   <div className="detail-page__soroban-actions">
-                    <Button variant="ghost" size="sm" onClick={handleRetrySoroban} loading={retryingSoroban}>
-                      {retryingSoroban ? 'Reintentando Soroban…' : 'Reintentar registro Soroban'}
+                    <Button variant="primary" size="sm" onClick={handleRegisterSoroban} loading={retryingSoroban}>
+                      {retryingSoroban
+                        ? 'Revisá Freighter…'
+                        : payment.sorobanRegistrationStatus === 'failed'
+                          ? 'Reintentar Soroban'
+                          : 'Pagar Soroban ahora'}
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={handleSkipSoroban} disabled={retryingSoroban || skippingSoroban}>
+                      {skippingSoroban ? 'Omitiendo…' : 'No pagar Soroban por ahora'}
                     </Button>
                   </div>
                 )}

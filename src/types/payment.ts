@@ -11,6 +11,7 @@ export type PaymentStatus =
 export type SorobanRegistrationStatus =
   | 'disabled'
   | 'pending'
+  | 'skipped'
   | 'submitted'
   | 'registered'
   | 'failed'
