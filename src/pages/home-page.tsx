@@ -67,6 +67,21 @@ export function HomePage({
     })
   }, [claimableBalances, claimablesQuery])
 
+  const sortedClaimables = useMemo(() => {
+    return [...filteredClaimables].sort((left, right) => {
+      const leftPayment = getPaymentByBalanceId(left.id)
+      const rightPayment = getPaymentByBalanceId(right.id)
+
+      if (leftPayment && !rightPayment) return -1
+      if (!leftPayment && rightPayment) return 1
+
+      const leftDate = new Date(leftPayment?.createdAt ?? left.last_modified_time).getTime()
+      const rightDate = new Date(rightPayment?.createdAt ?? right.last_modified_time).getTime()
+
+      return rightDate - leftDate
+    })
+  }, [filteredClaimables])
+
   const paginatedPayments = useMemo(() => {
     const start = (paymentsPage - 1) * PAGE_SIZE
     return filteredPayments.slice(start, start + PAGE_SIZE)
@@ -74,11 +89,11 @@ export function HomePage({
 
   const paginatedClaimables = useMemo(() => {
     const start = (claimablesPage - 1) * PAGE_SIZE
-    return filteredClaimables.slice(start, start + PAGE_SIZE)
-  }, [filteredClaimables, claimablesPage])
+    return sortedClaimables.slice(start, start + PAGE_SIZE)
+  }, [sortedClaimables, claimablesPage])
 
   const paymentsTotalPages = Math.max(1, Math.ceil(filteredPayments.length / PAGE_SIZE))
-  const claimablesTotalPages = Math.max(1, Math.ceil(filteredClaimables.length / PAGE_SIZE))
+  const claimablesTotalPages = Math.max(1, Math.ceil(sortedClaimables.length / PAGE_SIZE))
   const showPaymentsSection = view === 'overview' || view === 'payments'
   const showClaimablesSection = view === 'overview' || view === 'claimables'
   const showExplainer = view === 'overview'
@@ -219,6 +234,12 @@ export function HomePage({
             Estás viendo la vista del <strong>cosechero</strong>: balances donde esta wallet puede reclamar fondos.
           </div>
 
+          {filteredClaimables.length > 1 && (
+            <div className="home-page__role-note home-page__role-note--warning">
+              Esta wallet tiene <strong>{filteredClaimables.length} balances reclamables</strong>. Verificá el monto, la descripción y el sponsor antes de reclamar para no elegir el balance equivocado.
+            </div>
+          )}
+
           <div className="home-page__toolbar">
             <Input
               value={claimablesQuery}
@@ -259,7 +280,7 @@ export function HomePage({
                 <span className="home-page__pagination-note">
                   Mostrando {(claimablesPage - 1) * PAGE_SIZE + 1}
                   –
-                  {Math.min(claimablesPage * PAGE_SIZE, filteredClaimables.length)} de {filteredClaimables.length}
+                 {Math.min(claimablesPage * PAGE_SIZE, sortedClaimables.length)} de {sortedClaimables.length}
                 </span>
                 <div className="home-page__pagination-actions">
                   <Button

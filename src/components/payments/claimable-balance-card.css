@@ -34,6 +34,13 @@
   color: var(--color-text-muted);
 }
 
+.claimable-balance-card__description {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
 .claimable-balance-card__meta {
   display: grid;
   gap: 14px;
@@ -70,6 +77,44 @@
   font-size: 13px;
 }
 
+.claimable-balance-card__payment-context {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface-muted);
+}
+
+.claimable-balance-card__payment-context-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.claimable-balance-card__payment-context-head strong {
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.claimable-balance-card__context-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary-text);
+  text-decoration: none;
+}
+
+.claimable-balance-card__context-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.claimable-balance-card__context-grid > div:last-child {
+  grid-column: 1 / -1;
+}
+
 .claimable-balance-card__lock-note {
   margin-top: 14px;
   padding-top: 14px;
@@ -80,4 +125,20 @@
   font-size: 13px;
   color: var(--color-text-muted);
   line-height: 1.5;
+}
+
+@media (max-width: 780px) {
+  .claimable-balance-card__payment-context-head,
+  .claimable-balance-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .claimable-balance-card__context-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .claimable-balance-card__context-grid > div:last-child {
+    grid-column: auto;
+  }
 }

@@ -209,6 +209,12 @@
   border-color: var(--color-primary);
 }
 
+.home-page__role-note--warning {
+  background-color: #fff7ed;
+  border-color: #fed7aa;
+  color: #9a3412;
+}
+
 .home-page__toolbar {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

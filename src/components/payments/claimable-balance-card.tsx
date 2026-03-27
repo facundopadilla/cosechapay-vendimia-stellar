@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import type { HorizonClaimableBalance } from '@/lib/stellar/query-payments'
-import { accountExplorerUrl, balanceExplorerUrl } from '@/lib/stellar/client'
+import { accountExplorerUrl, txExplorerUrl } from '@/lib/stellar/client'
 import { Button } from '@/components/ui/button'
 import { getAssetDisplayLabel } from '@/lib/stellar/assets'
 import type { PaymentRecord } from '@/types/payment'
@@ -68,6 +69,9 @@ export function ClaimableBalanceCard({ balance, onClaim, payment }: ClaimableBal
         <div>
           <div className="claimable-balance-card__amount">{balance.amount}</div>
           <div className="claimable-balance-card__asset">{getAssetDisplayLabel(balance.asset)}</div>
+          {payment?.description && (
+            <p className="claimable-balance-card__description">{payment.description}</p>
+          )}
           <p className="claimable-balance-card__subtitle">
             {canClaimNow
               ? 'Fondos disponibles para esta wallet.'
@@ -100,16 +104,47 @@ export function ClaimableBalanceCard({ balance, onClaim, payment }: ClaimableBal
 
         <div>
           <span className="claimable-balance-card__label">Balance ID</span>
-          <a
-            href={balanceExplorerUrl(balance.id)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="claimable-balance-card__value mono claimable-balance-card__value--wide"
-          >
-            {balance.id} ↗
-          </a>
+          <span className="claimable-balance-card__value mono claimable-balance-card__value--wide">
+            {balance.id}
+          </span>
         </div>
       </div>
+
+      {payment && (
+        <div className="claimable-balance-card__payment-context">
+          <div className="claimable-balance-card__payment-context-head">
+            <strong>Pago detectado en CosechaPay</strong>
+            <Link to={`/payments/${payment.id}`} className="claimable-balance-card__context-link">
+              Ver detalle
+            </Link>
+          </div>
+          <div className="claimable-balance-card__context-grid">
+            <div>
+              <span className="claimable-balance-card__label">Monto esperado</span>
+              <span className="claimable-balance-card__value">{payment.amount} {payment.asset}</span>
+            </div>
+            <div>
+              <span className="claimable-balance-card__label">Creado</span>
+              <span className="claimable-balance-card__value">
+                {new Date(payment.createdAt).toLocaleString('es-AR')}
+              </span>
+            </div>
+            {payment.txHash && (
+              <div>
+                <span className="claimable-balance-card__label">TX creación</span>
+                <a
+                  href={txExplorerUrl(payment.txHash)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="claimable-balance-card__value mono"
+                >
+                  {payment.txHash.slice(0, 16)}… ↗
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {payment && releaseAt && (
         <div className="claimable-balance-card__lock-note">
