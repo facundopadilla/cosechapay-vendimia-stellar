@@ -380,6 +380,52 @@ export function PaymentDetailPage({
               </div>
             </div>
           )}
+
+          {payment.claimableBalanceId && (payment.txHash || payment.claimTxHash) && (
+            <div className="detail-page__field detail-page__field--wide">
+              <span className="detail-page__label">Verificación on-chain</span>
+              <div className="detail-page__value detail-page__verification-block">
+                <span className="detail-page__verification-copy">
+                  El monto real del reclamo se valida contra el Claimable Balance original. Explorers o wallets pueden resumir mal el historial, pero la fuente de verdad es Horizon más la TX de creación.
+                </span>
+
+                <div className="detail-page__verification-grid">
+                  <div>
+                    <span className="detail-page__label detail-page__label--subtle">Monto original del balance</span>
+                    <span className="detail-page__value">{payment.amount} {payment.asset}</span>
+                  </div>
+                  <div>
+                    <span className="detail-page__label detail-page__label--subtle">Claimable Balance</span>
+                    <span className="detail-page__value mono detail-page__balance-id">{payment.claimableBalanceId}</span>
+                  </div>
+                </div>
+
+                <div className="detail-page__verification-links">
+                  {payment.txHash && (
+                    <a
+                      href={txExplorerUrl(payment.txHash)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mono"
+                    >
+                      Ver TX creación ↗
+                    </a>
+                  )}
+
+                  {payment.claimTxHash && (
+                    <a
+                      href={txExplorerUrl(payment.claimTxHash)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mono"
+                    >
+                      Ver TX reclamo ↗
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
