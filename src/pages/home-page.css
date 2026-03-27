@@ -24,6 +24,10 @@
   border: 1px solid var(--color-border);
   border-radius: 24px;
   background-color: var(--color-surface);
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.8fr);
+  gap: 28px;
+  align-items: center;
 }
 
 /* Vineyard row grid — CSS only */
@@ -68,6 +72,12 @@
   position: relative;
   z-index: 1;
   animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.home-page__hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
 }
 
 .home-page__title {
@@ -121,6 +131,26 @@
   border-color: var(--color-primary);
   color: var(--color-text);
   transform: translateY(-2px);
+}
+
+.home-page__hero-media {
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.home-page__hero-image {
+  width: 100%;
+  max-width: 340px;
+  min-height: 260px;
+  max-height: 320px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 18px;
+  border: 1px solid rgb(45 106 79 / 0.12);
+  box-shadow: 0 16px 40px rgb(17 24 39 / 0.12);
 }
 
 /* Section */
@@ -309,10 +339,25 @@
 @media (max-width: 780px) {
   .home-page__hero {
     padding: 40px 28px 44px;
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .home-page__title {
     font-size: 44px;
+  }
+
+  .home-page__hero-copy {
+    max-width: none;
+  }
+
+  .home-page__hero-media {
+    justify-content: stretch;
+  }
+
+  .home-page__hero-image {
+    max-width: none;
+    min-height: 220px;
   }
 
   .home-page__section,

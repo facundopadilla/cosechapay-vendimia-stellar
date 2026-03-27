@@ -88,18 +88,28 @@ export function HomePage({
       {/* Hero / intro when no wallet connected */}
       {!wallet.isConnected && (
         <div className="home-page__hero">
-          <span className="home-page__hero-tag">Stellar Testnet</span>
-          <h1 className="home-page__title">
-            La cosecha
-            <em className="home-page__title-accent">se paga seguro.</em>
-          </h1>
-          <p className="home-page__subtitle">
-            El empleador bloquea el pago antes de que empiece la cosecha.
-            El cosechero sabe que el dinero está ahí.
-            Cuando termina el trabajo, el pago se reclama y queda todo visible on-chain.
-          </p>
-          <div className="home-page__cta-note">
-            Conectá tu wallet Freighter para comenzar.
+          <div className="home-page__hero-copy">
+            <span className="home-page__hero-tag">Stellar Testnet</span>
+            <h1 className="home-page__title">
+              La cosecha
+              <em className="home-page__title-accent">se paga seguro.</em>
+            </h1>
+            <p className="home-page__subtitle">
+              El empleador bloquea el pago antes de que empiece la cosecha.
+              El cosechero sabe que el dinero está ahí.
+              Cuando termina el trabajo, el pago se reclama y queda todo visible on-chain.
+            </p>
+            <div className="home-page__cta-note">
+              Conectá tu wallet Freighter para comenzar.
+            </div>
+          </div>
+
+          <div className="home-page__hero-media" aria-hidden="true">
+            <img
+              src="https://images.pexels.com/photos/5945849/pexels-photo-5945849.jpeg"
+              alt=""
+              className="home-page__hero-image"
+            />
           </div>
         </div>
       )}
