@@ -1,4 +1,4 @@
-import { Navigate, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import type { WalletState } from '@/types/payment'
 import type { usePayments } from '@/hooks/use-payments'
 import { HomePage } from '@/pages/home-page'
@@ -15,7 +15,20 @@ interface RouterProviderProps {
 export function RouterProvider({ wallet, payments }: RouterProviderProps) {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/payments" replace />} />
+      <Route
+        path="/"
+        element={
+          <HomePage
+            wallet={wallet}
+            payments={payments.payments}
+            claimableBalances={payments.claimableBalances}
+            loading={payments.loading}
+            onRefresh={payments.refresh}
+            onClaimBalance={payments.claimClaimableBalance}
+            view="overview"
+          />
+        }
+      />
       <Route
         path="/payments"
         element={

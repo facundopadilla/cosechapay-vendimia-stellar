@@ -30,14 +30,14 @@ export function AppLayout({ wallet, onConnect, onDisconnect, children }: AppLayo
           </div>
 
           <nav className="app-nav">
-            <Link
-              to="/payments"
-              className={`app-nav__link ${isExactActive('/payments') ? 'app-nav__link--active' : ''}`}
-            >
-              Mis pagos activos
-            </Link>
             {wallet.isConnected && (
               <>
+                <Link
+                  to="/payments"
+                  className={`app-nav__link ${isExactActive('/payments') ? 'app-nav__link--active' : ''}`}
+                >
+                  Mis pagos activos
+                </Link>
                 <Link
                   to="/payments/new"
                   className={`app-nav__link ${isExactActive('/payments/new') ? 'app-nav__link--active' : ''}`}
