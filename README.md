@@ -16,6 +16,7 @@
 ## 🚀 Demo
 
 - Demo live: https://cosechapay-vendimia-stellar.vercel.app/
+- Pitch route: https://cosechapay-vendimia-stellar.vercel.app/pitch
 - Track: Stellar - Claimable Balances / DeFi for good
 - Video: backup en preparacion
 
@@ -144,6 +145,15 @@ Para esta demo, el contrato desplegado en testnet es el siguiente:
 
 - Contract ID: `CA5NY3WINXKRKPWGDLEMH4PJCQRT4FEMKYGZEXWYRHUWHYYESKNSR75M`
 - Deploy tx: `170c4063f95fb6ea81db4d9c0c2167e63b7e54c2fbe1df5c3ceb8db149450751`
+
+## 🔗 Links útiles para jurado
+
+- App live: https://cosechapay-vendimia-stellar.vercel.app/
+- Pitch live: https://cosechapay-vendimia-stellar.vercel.app/pitch
+- Soroban contract en Stellar Lab: https://lab.stellar.org/r/testnet/contract/CA5NY3WINXKRKPWGDLEMH4PJCQRT4FEMKYGZEXWYRHUWHYYESKNSR75M
+- Soroban deploy tx en Stellar Expert: https://stellar.expert/explorer/testnet/tx/170c4063f95fb6ea81db4d9c0c2167e63b7e54c2fbe1df5c3ceb8db149450751
+- Soroban RPC testnet: https://soroban-testnet.stellar.org
+- Horizon testnet: https://horizon-testnet.stellar.org
 
 ## 📍 Estado actual
 
