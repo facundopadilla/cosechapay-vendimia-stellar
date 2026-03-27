@@ -72,12 +72,12 @@ Cosechero
 | Companion layer | Soroban `WorkAgreementRegistry` | `claimable_balance_id -> agreement_hash` |
 | Persistencia UI | localStorage | Metadata local del frontend |
 
-## 🤔 Por que esta arquitectura esta bien
+## 🤔 Decisiones de arquitectura
 
-- 🧱 **Menos riesgo**: el release de fondos no depende de un contrato custom
-- 🎬 **Mejor demo**: el happy path funciona con primitives nativas de Stellar
-- ⭐ **Mejor narrativa para el track**: Soroban aparece visible, sin poner en peligro la UX principal
-- 🚫 **Sin backend**: menos capas, menos puntos de falla, menos tiempo perdido
+- 🛡️ **Escrow nativo primero**: los fondos se bloquean con Claimable Balances, sin depender de lógica custom para el release.
+- 🧱 **Soroban como capa compañera**: el contrato no reemplaza el flujo principal; agrega un registro verificable del acuerdo.
+- 🔌 **Degradación segura**: si Soroban falla o se omite, el pago principal igual queda creado y reclamable.
+- 🚫 **Sin backend**: el MVP reduce complejidad operativa y mantiene la trazabilidad directamente sobre Stellar.
 
 ## 🪄 Companion layer Soroban
 
@@ -128,11 +128,13 @@ Necesitas:
 Para activar la companion layer Soroban en frontend:
 
 ```bash
-VITE_SOROBAN_WORK_AGREEMENT_CONTRACT_ID=CA5NY3WINXKRKPWGDLEMH4PJCQRT4FEMKYGZEXWYRHUWHYYESKNSR75M
+VITE_SOROBAN_WORK_AGREEMENT_CONTRACT_ID=<contract-id>
 VITE_SOROBAN_RPC_URL=https://soroban-testnet.stellar.org
 ```
 
 Si `VITE_SOROBAN_WORK_AGREEMENT_CONTRACT_ID` no existe, la app sigue funcionando en modo XLM-only con degradacion segura.
+
+Para esta demo, el contrato desplegado en testnet es el siguiente:
 
 ## 📜 Contract ID de testnet
 
