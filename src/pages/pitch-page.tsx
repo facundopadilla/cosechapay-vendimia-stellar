@@ -337,46 +337,8 @@ export function PitchPage() {
         </div>
       </section>
 
-      {/* ── Slide 5: Data flow ── */}
+      {/* ── Slide 5: Demo ── */}
       <section className={`pitch__slide ${current === 5 ? 'pitch__slide--active' : ''}`}>
-        <div className="pitch__slide-inner">
-          <span className="pitch__slide-label">Flujo de datos</span>
-          <h2 className="pitch__slide-title">Del formulario al escrow, y del escrow a Soroban.</h2>
-          <div className="pitch__flow">
-            <div className="pitch__flow-node pitch__flow-node--user">
-              <span>Empleador</span>
-            </div>
-            <div className="pitch__flow-connector" />
-            <div className="pitch__flow-node pitch__flow-node--app">
-              <span>CosechaPay</span>
-            </div>
-            <div className="pitch__flow-connector" />
-            <div className="pitch__flow-node pitch__flow-node--wallet">
-              <span>Freighter</span>
-            </div>
-            <div className="pitch__flow-connector" />
-            <div className="pitch__flow-node pitch__flow-node--chain">
-              <span>Stellar Testnet</span>
-            </div>
-            <div className="pitch__flow-connector" />
-            <div className="pitch__flow-node pitch__flow-node--app">
-              <span>Soroban RPC</span>
-            </div>
-          </div>
-          <div className="pitch__flow-labels">
-            <span>Crea pago</span>
-            <span>Firma TX</span>
-            <span>Claimable Balance</span>
-             <span>Registro opcional</span>
-          </div>
-          <p className="pitch__flow-note">
-            El cosechero consulta Horizon, detecta sus balances disponibles y reclama directamente con su wallet. Soroban aparece como paso opcional para dejar una huella verificable del acuerdo sin volverse dependencia del happy path.
-          </p>
-        </div>
-      </section>
-
-      {/* ── Slide 6: Demo ── */}
-      <section className={`pitch__slide ${current === 6 ? 'pitch__slide--active' : ''}`}>
         <div className="pitch__slide-inner pitch__slide-inner--stacked">
           <div className="pitch__slide-header">
             <span className="pitch__slide-label">Demo en vivo</span>
@@ -452,6 +414,44 @@ export function PitchPage() {
           </div>
           </div>{/* end split */}
         </div>{/* end stacked */}
+      </section>
+
+      {/* ── Slide 6: Data flow ── */}
+      <section className={`pitch__slide ${current === 6 ? 'pitch__slide--active' : ''}`}>
+        <div className="pitch__slide-inner">
+          <span className="pitch__slide-label">Flujo de datos</span>
+          <h2 className="pitch__slide-title">Del formulario al escrow, y del escrow a Soroban.</h2>
+          <div className="pitch__flow">
+            <div className="pitch__flow-node pitch__flow-node--user">
+              <span>Empleador</span>
+            </div>
+            <div className="pitch__flow-connector" />
+            <div className="pitch__flow-node pitch__flow-node--app">
+              <span>CosechaPay</span>
+            </div>
+            <div className="pitch__flow-connector" />
+            <div className="pitch__flow-node pitch__flow-node--wallet">
+              <span>Freighter</span>
+            </div>
+            <div className="pitch__flow-connector" />
+            <div className="pitch__flow-node pitch__flow-node--chain">
+              <span>Stellar Testnet</span>
+            </div>
+            <div className="pitch__flow-connector" />
+            <div className="pitch__flow-node pitch__flow-node--app">
+              <span>Soroban RPC</span>
+            </div>
+          </div>
+          <div className="pitch__flow-labels">
+            <span>Crea pago</span>
+            <span>Firma TX</span>
+            <span>Claimable Balance</span>
+            <span>Registro opcional</span>
+          </div>
+          <p className="pitch__flow-note">
+            El cosechero consulta Horizon, detecta sus balances disponibles y reclama directamente con su wallet. Soroban aparece como paso opcional para dejar una huella verificable del acuerdo sin volverse dependencia del happy path.
+          </p>
+        </div>
       </section>
 
       {/* ── Slide 7: Why Stellar ── */}
