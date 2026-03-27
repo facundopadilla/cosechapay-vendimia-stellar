@@ -1,102 +1,104 @@
-# Pitch + Demo Script (3 minutos)
+# Pitch + Demo Script (máximo 3 minutos)
 
-## Objetivo
+## Cómo usar este guion
 
-Tener un guion corto, claro y ejecutable para presentar **las diapositivas** y hacer **la demo en vivo** sin pasar los 3 minutos.
+Este texto está pensado para **leerlo casi literal** mientras mostrás las slides y hacés la demo.
 
-La idea no es explicar todo. La idea es contar:
+Objetivo:
 
-1. el problema
-2. por qué esta solución tiene sentido
-3. cómo se ve funcionando en vivo
-
----
-
-## Estructura recomendada
-
-- **Pitch con slides**: 1 minuto 30 segundos aprox.
-- **Demo en vivo**: 1 minuto 15 segundos aprox.
-- **Cierre**: 15 segundos aprox.
+- explicar el problema en segundos
+- mostrar la decisión arquitectónica correcta
+- demostrar la app funcionando de punta a punta
 
 ---
 
-## Guion completo
+## Timing recomendado
 
-### Slide 1 - Título
+- **Slides**: 1 minuto 20 segundos
+- **Demo**: 1 minuto 25 segundos
+- **Cierre**: 10 a 15 segundos
 
-> CosechaPay es una app para bloquear pagos de cosecha on-chain en Stellar antes de que empiece el trabajo.
+No te detengas demasiado en ninguna slide. El video tiene que sentirse ágil.
+
+---
+
+## Guion para leer
+
+### Slide 1 — Título
+
+> CosechaPay bloquea pagos de cosecha on-chain en Stellar antes de que empiece el trabajo.
 >
 > La idea es simple: que el cosechero no dependa solo de una promesa verbal.
 
-Tiempo: **10 segundos**
+Tiempo: **8 segundos**
 
 ---
 
-### Slide 2 - El problema
+### Slide 2 — El problema
 
 > En trabajo rural informal, muchas veces el cosechero empieza a trabajar sin garantía real de que el pago exista.
 >
-> El acuerdo depende de confianza verbal, y si hay conflicto, no hay nada verificable.
+> Si hay conflicto, no hay nada verificable. Solo palabra contra palabra.
 
-Tiempo: **12 segundos**
+Tiempo: **10 segundos**
 
 ---
 
-### Slide 3 - La solución
+### Slide 3 — La solución
 
-> CosechaPay resuelve eso bloqueando el dinero antes de que empiece la cosecha.
+> Nuestra solución es bloquear el dinero antes de la cosecha.
 >
-> El empleador crea un pago, los fondos quedan inmovilizados on-chain, y el cosechero puede ver que el dinero está ahí.
+> El empleador crea el pago, los fondos quedan inmovilizados on-chain y el cosechero puede verificar que el dinero está reservado.
 
-Tiempo: **12 segundos**
+Tiempo: **10 segundos**
 
 ---
 
-### Slide 4 - Cómo funciona
+### Slide 4 — Cómo funciona
 
 > El flujo tiene cuatro pasos.
 >
-> Primero se bloquea el pago con Claimable Balances. Después registramos un hash verificable del acuerdo en Soroban. Luego el cosechero ve que el dinero está reservado. Y finalmente lo reclama con su wallet.
+> Primero se crea el escrow con Claimable Balances. Después, como paso opcional, el empleador puede registrar en Soroban un hash verificable del acuerdo. Luego el cosechero ve que el dinero está reservado. Y finalmente lo reclama con su wallet.
 
-Tiempo: **18 segundos**
-
----
-
-### Slide 5 - Arquitectura
-
-> La decisión importante acá es arquitectónica.
->
-> El escrow real vive en Claimable Balances nativos de Stellar. Soroban no reemplaza eso: lo acompaña con una capa verificable extra.
->
-> Si Soroban falla, el flujo principal sigue funcionando.
-
-Tiempo: **18 segundos**
+Tiempo: **16 segundos**
 
 ---
 
-### Slide 6 - Flujo de datos
+### Slide 5 — Arquitectura
+
+> La decisión importante acá es que el escrow real vive en Claimable Balances nativos.
+>
+> Soroban no reemplaza el flujo principal. Lo acompaña como una capa verificable extra.
+>
+> Si Soroban se omite o falla, el pago principal sigue funcionando igual.
+
+Tiempo: **16 segundos**
+
+---
+
+### Slide 6 — Flujo de datos
 
 > No tenemos backend.
 >
-> La app construye la transacción, Freighter firma, Stellar guarda el escrow y Soroban registra el hash del acuerdo como companion layer.
+> La app construye la transacción, Freighter firma, Stellar guarda el escrow y después Soroban puede registrar el hash del acuerdo como companion layer opcional.
 
 Tiempo: **12 segundos**
 
 ---
 
-### Slide 7 - Demo en vivo
+### Slide 7 — Demo
 
-> Ahora lo vemos funcionando de verdad.
+> Ahora lo vemos funcionando en vivo.
 >
-> Voy a crear un pago como empleador, mostrar el escrow bloqueado, el registro Soroban, y después entrar como cosechero para reclamarlo.
+> Voy a crear un pago, mostrar el escrow bloqueado, elegir pagar Soroban, y después entrar como cosechero para reclamarlo.
 
-Tiempo: **10 segundos**
+Tiempo: **8 segundos**
 
 ---
 
 ## Demo en vivo
 
-### Paso 1 - Mostrar home
+### Paso 1 — Home
 
 Decir:
 
@@ -108,15 +110,15 @@ Mostrar:
 - wallet conectada
 - botón de nuevo pago
 
-Tiempo: **10 segundos**
+Tiempo: **8 segundos**
 
 ---
 
-### Paso 2 - Crear pago como empleador
+### Paso 2 — Crear pago
 
 Decir:
 
-> Primero entra el empleador. Carga la dirección del cosechero, el monto y un lock corto para la demo.
+> Primero entra el empleador. Carga la dirección del cosechero, un monto chico y un lock corto para la demo.
 
 Mostrar:
 
@@ -125,72 +127,90 @@ Mostrar:
 - monto chico, por ejemplo `0.1 XLM`
 - lock corto
 
-Tiempo: **15 segundos**
+Tiempo: **12 segundos**
 
 ---
 
-### Paso 3 - Firmar con Freighter
+### Paso 3 — Primera firma
 
 Decir:
 
-> Ahora Freighter firma una transacción real de Stellar. No estamos simulando nada.
+> Ahora Freighter firma la creación del escrow. Esta es una transacción real de Stellar.
 
 Mostrar:
 
-- popup de Freighter si aparece
-- confirmación de la transacción
+- popup de Freighter
+- confirmación del pago
 
 Tiempo: **10 segundos**
 
 ---
 
-### Paso 4 - Mostrar pago bloqueado + Soroban
+### Paso 4 — Escrow creado
 
 Decir:
 
-> Ahora el pago quedó bloqueado on-chain como Claimable Balance.
+> Listo. El pago ya quedó bloqueado on-chain como Claimable Balance.
 >
-> Y además, sin tocar el escrow principal, la app registra en Soroban un hash verificable del acuerdo.
+> Y ahora aparece un segundo paso explícito: pagar Soroban o saltearlo por ahora.
 
 Mostrar:
 
-- estado bloqueado
-- tx de creación
-- claimable balance id
-- estado o tx Soroban
+- pantalla de `Fondos bloqueados`
+- `TX creación`
+- bloque con botones de Soroban
 
-Tiempo: **18 segundos**
+Tiempo: **12 segundos**
 
 ---
 
-### Paso 5 - Cambiar a la wallet del cosechero
+### Paso 5 — Pagar Soroban
 
 Decir:
 
-> Ahora entra el cosechero. La app consulta Horizon y detecta qué balances puede reclamar esta wallet.
+> Elijo pagar Soroban ahora. Freighter vuelve a abrirse para una segunda firma, pero esta vez solo para registrar el hash verificable del acuerdo.
+
+Mostrar:
+
+- botón `Pagar Soroban ahora`
+- segunda firma en Freighter
+- feedback de Soroban
+
+Tiempo: **15 segundos**
+
+---
+
+### Paso 6 — Mostrar detalle
+
+Decir:
+
+> En el detalle del pago vemos el estado del escrow, el Claimable Balance ID y también el estado o la TX Soroban.
+
+Mostrar:
+
+- detalle del pago
+- `Claimable Balance ID`
+- bloque `Registro Soroban`
+- `TX Soroban` si aparece
+
+Tiempo: **12 segundos**
+
+---
+
+### Paso 7 — Reclamo del cosechero
+
+Decir:
+
+> Ahora cambio a la wallet del cosechero. La app detecta el balance y lo reclama directamente desde su wallet.
 
 Mostrar:
 
 - cambiar wallet
-- sección de balances reclamables
+- reclamar
+- firma final
+- estado reclamado
 
-Tiempo: **10 segundos**
-
----
-
-### Paso 6 - Reclamar fondos
-
-Decir:
-
-> El cosechero reclama los fondos directamente con su wallet. El dinero ya estaba reservado desde antes.
-
-Mostrar:
-
-- click en reclamar
-- firma en Freighter
-- estado final
-
-Tiempo: **15 segundos**
+Tiempo: **16 segundos**
 
 ---
 
@@ -198,9 +218,9 @@ Tiempo: **15 segundos**
 
 > En resumen: usamos Claimable Balances como escrow nativo y Soroban como companion layer verificable.
 >
-> El resultado es una app simple, sin backend, que convierte una promesa verbal en un pago reservado y trazable.
+> Convertimos una promesa verbal en un pago reservado, visible y trazable on-chain.
 
-Tiempo: **15 segundos**
+Tiempo: **12 segundos**
 
 ---
 
@@ -208,30 +228,30 @@ Tiempo: **15 segundos**
 
 > CosechaPay bloquea pagos de cosecha on-chain antes de que empiece el trabajo.
 >
-> El escrow real vive en Claimable Balances nativos de Stellar, y Soroban agrega una capa verificable del acuerdo sin romper el happy path.
+> El escrow real vive en Claimable Balances nativos de Stellar y Soroban agrega una capa verificable opcional del acuerdo.
 >
-> Ahora lo muestro en vivo creando un pago, viendo el registro y reclamándolo desde la wallet del cosechero.
+> Ahora lo muestro creando un pago, registrándolo en Soroban y reclamándolo desde la wallet del cosechero.
 
 ---
 
-## Qué NO decir para no perder tiempo
+## Qué NO decir
 
-- no expliques toda Stellar desde cero
-- no expliques detalles internos del SDK
+- no expliques todo Stellar desde cero
 - no expliques código
-- no te detengas demasiado en la UI
-- no hables más de 20 segundos por slide
+- no expliques internals del SDK
+- no discutas demasiado la UI
+- no hables más de 15 o 20 segundos por slide
 
 ---
 
-## Checklist antes de grabar o presentar
+## Checklist antes de grabar
 
 - empleador en Testnet
 - cosechero en Testnet
 - ambas wallets fondeadas
-- lock corto configurado para demo
-- una operación ya probada de punta a punta
-- explorer fácil de abrir
-- Vercel funcionando
-- env vars Soroban cargadas
-- plan B listo si Freighter o Testnet fallan
+- lock corto configurado
+- flujo probado completo una vez
+- Soroban funcionando con `.env.local` o Vercel
+- contract ID cargado
+- Freighter listo
+- explorer abierto por si lo necesitás

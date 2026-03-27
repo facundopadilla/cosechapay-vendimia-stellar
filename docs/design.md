@@ -27,6 +27,8 @@ Employer UI
    │                                                  │
    │                                                  └─ Claimable Balance creado
    │
+   ├─ optional Soroban step → Soroban RPC ────────→ WorkAgreementRegistry
+   │
    └─ read status ──────────→ Horizon API ─────────→ UI state
 
 Worker view
@@ -39,8 +41,8 @@ Worker view
 3. La app construye `createClaimableBalance`.
 4. Freighter firma y envía la transacción.
 5. Horizon confirma el balance y la app lo muestra como `locked`.
-6. La app intenta registrar en Soroban `claimable_balance_id -> agreement_hash`.
-7. Si Soroban falla, el pago sigue `locked` igual.
+6. La success screen ofrece un segundo paso explícito: registrar en Soroban `claimable_balance_id -> agreement_hash` o omitirlo por ahora.
+7. Si Soroban falla o se omite, el pago sigue `locked` igual.
 8. Cosechero reclama el balance.
 9. La app vuelve a consultar Horizon y refleja `claimed`.
 
@@ -60,6 +62,7 @@ type PaymentRecord = {
   claimableBalanceId?: string
   createdAt: string
   txHash?: string
+  sorobanRegistrationStatus?: 'disabled' | 'pending' | 'skipped' | 'submitted' | 'registered' | 'failed'
   sorobanTxHash?: string
 }
 ```
@@ -108,7 +111,7 @@ export interface WalletAdapter {
 |---|---|---|
 | Unit | mapeo de estados, validaciones, parsers Horizon | Vitest |
 | Integration | create/claim/query en testnet | pruebas manuales guiadas |
-| E2E | happy path completo de demo | 2 wallets Freighter + checklist |
+| E2E | happy path completo de demo + Soroban opt-in | 2 wallets Freighter + checklist |
 
 ## Migration / Rollout
 No migration required.

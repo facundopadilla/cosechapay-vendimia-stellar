@@ -4,6 +4,7 @@
 Mostrar en 60–90 segundos que CosechaPay permite:
 - bloquear un pago de cosecha antes del trabajo
 - verificarlo on-chain
+- registrar opcionalmente el acuerdo en Soroban
 - reclamarlo desde la wallet del cosechero
 
 ## Preparación previa
@@ -21,7 +22,7 @@ Mostrar en 60–90 segundos que CosechaPay permite:
 
 ### Fallback
 - Tener una transacción ya creada por si falla internet/testnet
-- Tener abierto Stellar Expert o links listos
+- Tener abierto Stellar Expert o links de TX listos
 
 ## Guión corto de pitch
 
@@ -75,14 +76,27 @@ Después de crear, entrar al detalle.
 
 Decir:
 
-> Ahora el pago quedó bloqueado on-chain. Y además, sin tocar el escrow principal, registramos en Soroban un hash verificable del acuerdo como capa compañera.
+> Ahora el pago quedó bloqueado on-chain. Y además aparece un segundo paso opcional para registrar en Soroban un hash verificable del acuerdo como capa compañera.
 
 Mostrar:
 - estado **Bloqueado**
 - TX creación
 - Claimable Balance ID
+- bloque con `Pagar Soroban ahora` o `No pagar Soroban por ahora`
 - estado/TX de registro Soroban si está configurado
-- links al explorer
+- links a la TX o recursos on-chain relevantes
+
+### 5.1 Registrar Soroban
+Si vas a mostrar la companion layer, hacer click en **Pagar Soroban ahora**.
+
+Decir:
+
+> El escrow principal ya quedó creado. Esta segunda firma es opcional y sirve para dejar una huella verificable del acuerdo en Soroban.
+
+Mostrar:
+- segunda firma en Freighter
+- feedback de Soroban
+- estado/TX Soroban en el detalle
 
 ### 6. Cambiar a la wallet del cosechero
 Volver a home y conectar la wallet del cosechero.
@@ -116,17 +130,17 @@ Decir:
 Mostrar:
 - estado reclamado
 - TX de reclamo si está visible
-- explorer
+- explorer o TX relevante
 
 ## Versión de 30 segundos
 
-> CosechaPay permite que un empleador bloquee un pago de cosecha antes de que empiece el trabajo. Ese dinero queda reservado en Stellar como Claimable Balance. Después, el cosechero lo reclama con su wallet y todo queda verificable on-chain.
+> CosechaPay permite que un empleador bloquee un pago de cosecha antes de que empiece el trabajo. Ese dinero queda reservado en Stellar como Claimable Balance. Opcionalmente, también puede registrarse en Soroban. Después, el cosechero lo reclama con su wallet y todo queda verificable on-chain.
 
 ## Qué remarcar en el pitch
 - problema real y local
 - blockchain usada para confianza, no decoración
 - escrow nativo con Claimable Balances como core
-- Soroban como companion layer verificable, no como dependencia obligatoria del happy path
+- Soroban como companion layer verificable, opcional y no obligatoria para el happy path
 - demo real en Stellar Testnet
 - extensible a reglas más complejas en una siguiente fase
 
@@ -150,5 +164,5 @@ Mostrar:
 - [ ] ambas wallets fondeadas
 - [ ] app local levantada
 - [ ] una operación ya probada de punta a punta
-- [ ] explorer abierto o fácil de abrir
+- [ ] explorer o TX abierto/fácil de abrir
 - [ ] plan B listo

@@ -33,7 +33,7 @@ CosechaPay hace una cosa simple, pero potente: **bloquea el pago antes de que em
 - Los fondos quedan inmovilizados como un **Claimable Balance** nativo
 - El cosechero puede ver que el dinero existe on-chain
 - Cuando se cumple el unlock, reclama desde su wallet
-- Ademas, la app registra en Soroban un **hash verificable del acuerdo** como companion layer
+- Ademas, la app puede registrar en Soroban un **hash verificable del acuerdo** como companion layer
 
 La clave conceptual es esta: el core del producto **NO depende de Soroban**.
 
@@ -48,7 +48,7 @@ Empleador
   -> conecta Freighter
   -> crea pago
   -> Stellar crea Claimable Balance con time lock
-  -> CosechaPay intenta registrar agreement_hash en Soroban
+  -> elige si registra agreement_hash en Soroban o lo omite por ahora
 
 Cosechero
   -> conecta Freighter
@@ -89,7 +89,7 @@ claimable_balance_id -> agreement_hash
 
 Reglas de integracion:
 
-- 🔁 se ejecuta solo despues de crear exitosamente el Claimable Balance
+- 🔁 aparece como segundo paso opcional despues de crear exitosamente el Claimable Balance
 - 🫶 es **best-effort**
 - 🧯 si Soroban falla, el pago principal igual queda creado
 - 🖥️ la UI muestra estado, hash y tx de Soroban solo si existen
@@ -103,8 +103,8 @@ En menos de 1 minuto se puede mostrar:
 2. crea pago con address, monto y lock
 3. Freighter firma una transaccion real de Stellar
 4. la app muestra el balance bloqueado y su tx
-5. la app intenta registrar el acuerdo en Soroban
-6. la app muestra estado y TX Soroban en el detalle
+5. el empleador elige si paga Soroban ahora o lo omite por el momento
+6. la app muestra estado y TX Soroban en el detalle cuando existen
 7. el cosechero entra con su wallet
 8. reclama el balance
 9. todo queda verificable on-chain

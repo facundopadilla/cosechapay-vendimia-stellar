@@ -217,8 +217,8 @@ export function PitchPage() {
               <div className="pitch__step-arrow">&#8594;</div>
               <div className="pitch__step-card">
                 <span className="pitch__step-num">02</span>
-                <h3>Registrá el acuerdo</h3>
-                 <p>Después del escrow, la app registra en Soroban un hash verificable del acuerdo sin bloquear el flujo principal.</p>
+                <h3>Elegí Soroban</h3>
+                 <p>Después del escrow, el empleador puede registrar en Soroban un hash verificable del acuerdo o saltearlo por ahora.</p>
               </div>
               <div className="pitch__step-arrow">&#8594;</div>
               <div className="pitch__step-card">
@@ -278,7 +278,7 @@ export function PitchPage() {
                 <div className="pitch__m-mini-card">
                   <div className="pitch__m-mini-row">
                     <strong>agreement_hash</strong>
-                    <span className="pitch__m-badge pitch__m-badge--success">Best-effort</span>
+                    <span className="pitch__m-badge pitch__m-badge--success">Opt-in</span>
                   </div>
                   <div className="pitch__m-mini-mono">claimable_balance_id -&gt; hash</div>
                 </div>
@@ -323,7 +323,7 @@ export function PitchPage() {
             </div>
             <div className="pitch__arch-card">
               <h3>Soroban companion layer</h3>
-              <p>Registro verificable `claimable_balance_id -&gt; agreement_hash` solo post-escrow y con degradación segura.</p>
+              <p>Registro verificable `claimable_balance_id -&gt; agreement_hash` como segundo paso explícito, post-escrow y con degradación segura.</p>
             </div>
             <div className="pitch__arch-card">
               <h3>Freighter Wallet</h3>
@@ -367,10 +367,10 @@ export function PitchPage() {
             <span>Crea pago</span>
             <span>Firma TX</span>
             <span>Claimable Balance</span>
-             <span>Registro hash</span>
+             <span>Registro opcional</span>
           </div>
           <p className="pitch__flow-note">
-            El cosechero consulta Horizon, detecta sus balances disponibles y reclama directamente con su wallet. En paralelo, Soroban deja una huella verificable del acuerdo sin volverse dependencia del happy path.
+            El cosechero consulta Horizon, detecta sus balances disponibles y reclama directamente con su wallet. Soroban aparece como paso opcional para dejar una huella verificable del acuerdo sin volverse dependencia del happy path.
           </p>
         </div>
       </section>
@@ -402,7 +402,7 @@ export function PitchPage() {
               </div>
               <div className="pitch__demo-item">
                 <span className="pitch__demo-check">&#10003;</span>
-                 <span>Mostrar estado y TX Soroban en el detalle</span>
+                 <span>Elegir Soroban y mostrar estado o TX en el detalle</span>
               </div>
               <div className="pitch__demo-item">
                 <span className="pitch__demo-check">&#10003;</span>
